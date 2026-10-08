@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     <link rel="icon" href="assets/fav.png"
+        type="image/jpeg">
+    <title>Dermatology & Skin Clinic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+                /* =========================
+           THEME VARIABLES - TEAL & BLUE
+        ========================= */
+        :root,
+        html[data-theme='light'] {
+            --color-background: #FFFFFF;
+            --color-primary-text: #000000;
+            --color-secondary-text: #4B5563;
+            --color-primary: #0F766E; /* Teal */
+            --color-secondary: #0ea5e9; /* Light blue */
+            --color-accent: #0F766E; /* Teal */
+            --color-border: #E5E7EB;
+            --color-hover: #F0FDF4;
+            --color-footer-bg: #042F2E;
+            --color-footer-text: #FFFFFF;
+            --color-card-bg: #FFFFFF;
+        }
+
+        html[data-theme='dark'] {
+            --color-background: #09090B; /* Near Black */
+            --color-primary-text: #FFFFFF;
+            --color-secondary-text: #9CA3AF;
+            --color-primary: #14B8A6; /* Teal */
+            --color-secondary: #38BDF8; /* Light blue */
+            --color-accent: #14B8A6; /* Teal */
+            --color-border: #27272A;
+            --color-hover: #134E4A;
+            --color-footer-bg: #000000;
+            --color-footer-text: #FFFFFF;
+            --color-card-bg: #18181B; /* Dark Gray */
+        }
+
+        html,
+        body {
+            background: var(--color-background);
+            color: var(--color-primary-text);
+            font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+        }
+
+        
+        
+        .bg-primary {
+            background-color: var(--color-primary);
+        }
+        .bg-accent {
+            background-color: var(--color-accent);
+        }
+
+        .bg-card-bg {
+            background-color: var(--color-card-bg);
+        }
+        .bg-gradient-primary-accent {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+        }
+        
+        .bg-secondary {
+            background-color: var(--color-secondary);
+        }
+        .hover\:bg-primary:hover {
+            background-color: var(--color-primary);
+        }
+        .hover\:bg-accent:hover {
+            background-color: var(--color-accent);
+        }
+        .hover\:bg-secondary:hover {
+            background-color: var(--color-secondary);
+        }
+
+        .text-primary-text {
+            color: var(--color-primary-text);
+        }
+
+        .text-secondary-text {
+            color: var(--color-secondary-text);
+        }
+
+        .text-accent {
+            color: var(--color-accent);
+        }
+
+        .text-primary {
+            color: var(--color-primary);
+        }
+        .hover\:text-primary:hover {
+            color: var(--color-primary);
+        }
+
+
+        .text-secondary {
+            color: var(--color-secondary);
+        }
+
+        .bg-background {
+            background-color: var(--color-background);
+        }
+
+        .bg-hover {
+            background-color: var(--color-hover);
+        }
+
+        .border-border {
+            border-color: var(--color-border);
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+        #main-header nav {
+            background: var(--color-card-bg);
+            border-radius: 12px;
+            padding: 10px 25px;
+            margin: 0 auto;
+            max-width: 1350px;
+            box-shadow: 0 10px 25px rgba(156, 44, 29, 0.15);
+        }
+
+        .header-accent {
+            color: var(--color-primary);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            background-color: var(--color-accent);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        .nav-link.active {
+            color: var(--color-accent);
+        }
+
+        /* Dropdowns */
+        .dropdown-wrapper {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 0.5rem;
+            box-shadow: 0 12px 30px rgba(156, 44, 29, 0.18);
+            min-width: 200px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: 0.25s ease;
+        }
+
+        .dropdown-wrapper.open .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-wrapper.open svg {
+            transform: rotate(180deg);
+            transition: 0.25s;
+        }
+
+        .dropdown-menu a,
+        .dropdown-menu button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: var(--color-primary-text);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid var(--color-border);
+            width: 100%;
+            background: none;
+            cursor: pointer;
+        }
+
+        .dropdown-menu a:last-child,
+        .dropdown-menu button:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-menu a:hover,
+        .dropdown-menu button:hover {
+            background-color: var(--color-hover);
+            color: var(--color-accent);
+            padding-left: 1.25rem;
+        }
+
+        /* Subtle gap fix for Home & Restorations */
+        .home-link-gap {
+            margin-inline-end: 0.75rem;
+        }
+
+        @media (max-width: 1280px) {
+            .dropdown-menu {
+                position: absolute;
+                top: calc(100% + 8px);
+                left: 0;
+                display: none;
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .dropdown-wrapper.open .dropdown-menu {
+                display: block;
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+        }
+
+        /* GLOW & CARDS */
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(192, 57, 43, 0.1);
+        }
+
+        .glow-on-hover:hover {
+            box-shadow: 0 0 25px rgba(192, 57, 43, 0.3);
+        }
+
+        /* Marquee */
+        .testimonial-marquee {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marqueeScroll 30s linear infinite;
+        }
+
+        .testimonial-card {
+            flex: 0 0 auto;
+            margin-right: 24px;
+            background: var(--color-card-bg);
+            border-radius: 1rem;
+            width: 320px;
+        }
+
+        @keyframes marqueeScroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .testimonial-marquee:hover .marquee-track {
+            animation-play-state: paused;
+        }
+
+        /* Circles */
+        .circle-card {
+            width: 180px;
+            height: 180px;
+            background: var(--color-card-bg);
+            border-radius: 50%;
+            border: 3px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: .4s ease;
+            margin: auto;
+        }
+
+        .circle-card:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 25px rgba(192, 57, 43, 0.4);
+            border-color: var(--color-accent);
+        }
+
+        .circle-inner h3 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--color-accent);
+        }
+
+        /* Project overlay */
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            transition: all 0.4s ease;
+            background: var(--color-card-bg);
+        }
+
+        .project-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(156, 44, 29, 0.9), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.5rem;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: scale(1.03);
+        }
+
+        /* Articles */
+        .article-card {
+            transition: all 0.3s ease;
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .article-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(156, 44, 29, 0.12);
+        }
+
+        .article-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .article-card:hover .article-image {
+            transform: scale(1.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--color-primary), var(--color-accent), var(--color-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            padding-bottom: 0.1em;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: var(--color-background) !important;
+            border: 2px solid var(--color-primary);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-secondary);
+            border-color: var(--color-secondary);
+            color: var(--color-background) !important;
+            box-shadow: 0 10px 20px -5px rgba(176, 141, 87, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-accent {
+            background-color: transparent;
+            color: var(--color-accent) !important;
+            border: 2px solid var(--color-accent);
+            transition: all 0.3s ease;
+        }
+
+        .btn-accent:hover {
+            background-color: var(--color-accent);
+            color: var(--color-background) !important;
+            border-color: var(--color-accent);
+            box-shadow: 0 10px 20px -5px rgba(176, 141, 87, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .particle-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: var(--color-accent);
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: floatParticle 12s infinite ease-in-out;
+        }
+
+        @keyframes floatParticle {
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+
+            50% {
+                transform: translateY(-20px) translateX(10px);
+            }
+        }
+
+        .footer-link {
+            color: #ffffff;
+            transition: color 0.3s;
+        }
+
+        .footer-link:hover {
+            color: var(--color-accent);
+        }
+
+        @media (max-width: 768px) {
+            .circle-card {
+                width: 140px;
+                height: 140px;
+            }
+
+            .circle-inner h3 {
+                font-size: 2rem;
+            }
+
+            .circle-cards-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 20px !important;
+            }
+
+            .project-overlay {
+                opacity: 1 !important;
+                background: linear-gradient(to top, rgba(156, 44, 29, 0.85), rgba(156, 44, 29, 0.4), transparent);
+            }
+        }
+
+        @media (max-width: 1280px) {
+            .circle-cards-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 24px !important;
+                justify-items: center;
+            }
+        }
+    
+        /* RTL Dropdown alignment override */
+        html[dir="rtl"] .dropdown-menu {
+            left: auto;
+            right: 0;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+    <header class="fixed top-3 left-0 w-full z-50 px-4 sm:px-6" id="main-header">
+        <nav class="mx-auto max-w-[1350px] px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between h-14 rounded-xl shadow-xl border border-border bg-card-bg"
+            style="background-color: var(--color-card-bg);">
+            <a href="index.html" class="text-2xl sm:text-3xl font-serif font-semibold text-accent shrink-0"><i class="fa-solid fa-spa mr-2"></i>Skin Clinic</a>
+
+            <!-- Desktop Navigation (Centered) -->
+            <div class="hidden xl:flex items-center justify-center flex-1 px-8">
+                <div class="flex space-x-6 rtl:space-x-reverse text-primary-text font-medium">
+                    <div class="dropdown-wrapper home-link-gap">
+                        <button class="nav-link flex items-center dropdown-toggle">Home <svg
+                                class="w-3 h-3 ml-1.5 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg></button>
+                        <div class="dropdown-menu">
+                            <a href="index.html">Home 1</a>
+                            <a href="home2.html">Home 2</a>
+                        </div>
+                    </div>
+                                        <a href="treatments.html" class="nav-link">Treatments</a>
+                    <a href="doctors.html" class="nav-link">Doctors</a>
+                    <a href="about.html" class="nav-link">About</a>
+                    <a href="contact.html" class="nav-link">Contact</a>
+                    <div class="dropdown-wrapper">
+                        <button class="nav-link flex items-center dropdown-toggle">Dashboard <svg class="w-3 h-3 ml-1.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+                        <div class="dropdown-menu">
+                                                        <a href="patient-dashboard.html">Patient Dashboard</a>
+                            <a href="appointment.html">Admin Portal</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Actions (Icons) -->
+            <div class="hidden xl:flex items-center space-x-3 rtl:space-x-reverse shrink-0">
+                <!-- Login Link -->
+                <div class="flex items-center space-x-3 rtl:space-x-reverse mr-2">
+                    <a href="login.html" class="btn-accent px-4 py-1.5 rounded-lg text-sm font-medium flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket"></i> Login
+                    </a>
+                </div>
+
+                <button id="theme-toggle"
+                    class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200">
+                    <svg class="w-5 h-5 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                    <svg class="w-5 h-5 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+                        </path>
+                    </svg>
+                </button>
+                <button id="lang-icon" class="text-primary hover:text-accent p-1.5 rounded-full transition duration-200"
+                    title="RTL/LTR">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="flex items-center xl:hidden">
+                <button id="mobile-menu-open" class="icon-btn text-primary hover:text-accent p-1.5 rounded-full">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu-drawer" class="fixed inset-0 z-50 pointer-events-none transition-all duration-300">
+        <div id="drawer-backdrop"
+            class="absolute inset-0 bg-black opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+        <div id="drawer-content"
+            class="absolute top-0 left-0 right-0 bg-background rounded-b-2xl shadow-2xl p-6 xl:hidden max-h-[80vh] overflow-y-auto transform translate-y-[-100%] transition-transform duration-300 ease-out">
+            <div class="flex justify-between items-center pb-4 border-b border-border">
+                <h3 class="text-2xl sm:text-3xl font-serif font-semibold text-accent"><i class="fa-solid fa-spa mr-2"></i>Skin Clinic</h3> <button
+                    id="mobile-menu-close" class="text-primary hover:text-accent p-1.5 rounded-full"><svg
+                        class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg></button>
+            </div>
+            <nav class="flex flex-col space-y-2 py-4">
+                <div>
+                    <button
+                        class="block text-primary-text font-semibold text-lg hover:text-accent py-2 w-full text-left flex justify-between items-center"
+                        id="mobile-homes-toggle">Home <svg class="w-4 h-4 transform transition-transform"
+                            id="homes-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg></button>
+                    <div id="mobile-homes-menu"
+                        class="hidden pl-4 flex flex-col space-y-1 mt-1 border-l-2 border-border">
+                        <a href="index.html" class="text-secondary hover:text-accent py-1 px-2">Home 1</a>
+                        <a href="home2.html" class="text-secondary hover:text-accent py-1 px-2">Home 2</a>
+                    </div>
+                </div>
+                                <a href="treatments.html" class="text-primary-text font-semibold text-lg hover:text-accent py-2">Treatments</a>
+                <a href="doctors.html" class="text-primary-text font-semibold text-lg hover:text-accent py-2">Doctors</a>
+                <a href="about.html" class="text-primary-text font-semibold text-lg hover:text-accent py-2">About</a>
+                <a href="contact.html" class="text-primary-text font-semibold text-lg hover:text-accent py-2">Contact</a>
+                <div>
+                    <button class="block text-primary-text font-semibold text-lg hover:text-accent py-2 w-full text-left flex justify-between items-center" id="mobile-dashboard-toggle">Dashboard <svg class="w-4 h-4 transform transition-transform" id="dashboard-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+                    <div id="mobile-dashboard-menu" class="hidden pl-4 flex flex-col space-y-1 mt-1 border-l-2 border-border">
+                                                <a href="patient-dashboard.html" class="text-secondary hover:text-accent py-1 px-2">Patient Dashboard</a>
+                        <a href="appointment.html" class="text-secondary hover:text-accent py-1 px-2">Admin Portal</a>
+                    </div>
+                </div>
+                <!-- Login inside mobile header -->
+                <div class="pt-3 mt-2 border-t border-border flex gap-3">
+                    <a href="login.html"
+                        class="flex-1 py-2.5 rounded-lg border border-accent text-accent hover:bg-white hover:text-accent transition font-medium flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket"></i> Login
+                    </a>
+                </div>
+            </nav>
+            <div class="bottom-icons pt-4 border-t border-border mt-4 flex justify-center items-center gap-8">
+
+                <!-- Theme Toggle (same style as navbar) -->
+                <button id="mobile-theme-toggle"
+                    class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200">
+                    <svg class="w-6 h-6 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                    <svg class="w-6 h-6 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+                        </path>
+                    </svg>
+                </button>
+
+                <!-- RTL -->
+                <button id="mobile-lang-icon"
+                    class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                    </svg>
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <main class="relative pt-24">
+ <!-- ================= SECTION 1: HERO — SPLIT ASYMMETRIC ================= -->
+<section id="hero2" class="relative overflow-hidden bg-background min-h-[80vh] flex items-center py-10 lg:py-0 px-4 sm:px-6">
+    <div class="w-full max-w-7xl mx-auto py-8">
+        <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <!-- Left: Big image collage -->
+            <div class="lg:col-span-7 order-2 lg:order-1">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-4 pt-8">
+                        <img src="assets/b1.jpg"
+                            alt="Dermatology consultation"
+                            class="w-full h-48 sm:h-64 object-cover rounded-2xl border border-border shadow-lg">
+                        <img src="assets/b2.jpg"
+                            alt="Skin analysis"
+                            class="w-full h-40 sm:h-56 object-cover rounded-2xl border border-border shadow-lg">
+                    </div>
+                    <div class="space-y-4">
+                        <img src="assets/b3.jpg"
+                            alt="Laser treatment"
+                            class="w-full h-40 sm:h-56 object-cover rounded-2xl border border-border shadow-lg">
+                        <img src="assets/b4.jpg"
+                            alt="Clinic interior"
+                            class="w-full h-48 sm:h-64 object-cover rounded-2xl border border-border shadow-lg">
+                    </div>
+                </div>
+            </div>
+            <!-- Right: Text content -->
+            <div class="lg:col-span-5 order-1 lg:order-2 text-center lg:text-left">
+                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-hover text-accent border border-border mb-5">
+                    <i class="fa-solid fa-award"></i> Award-Winning Clinic
+                </span>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight mb-5 text-primary-text">
+                    Where Science Meets <span class="gradient-text">Radiant Skin</span>
+                </h1>
+                <p class="text-base sm:text-lg text-secondary-text max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed">
+                    Trusted by thousands for medical and cosmetic dermatology. Our specialists combine advanced technology with a gentle, patient-first approach.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
+                    <a href="appointment.html" class="btn-primary px-8 py-3.5 rounded-lg font-semibold text-sm inline-flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-calendar-check"></i> Book Now
+                    </a>
+                    <a href="about.html" class="btn-accent px-8 py-3.5 rounded-lg font-semibold text-sm inline-flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Our Story
+                    </a>
+                </div>
+                <!-- Inline rating -->
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-6 border-t border-border">
+                    <div class="flex items-center gap-2">
+                        <div class="flex -space-x-2">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80" class="w-8 h-8 rounded-full border-2 border-background object-cover" alt="Patient">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80" class="w-8 h-8 rounded-full border-2 border-background object-cover" alt="Patient">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80" class="w-8 h-8 rounded-full border-2 border-background object-cover" alt="Patient">
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-primary-text">4.9/5</p>
+                            <p class="text-xs text-secondary-text">2,400+ reviews</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= SECTION 2: CONCERN FINDER (Interactive Grid) ================= -->
+<section id="concerns" class="bg-hover py-16 md:py-24 px-4 sm:px-6 border-y border-border">
+    <div class="w-full max-w-7xl mx-auto py-8">
+        <div class="text-center mb-12 md:mb-16">
+            <span class="text-accent font-semibold text-sm uppercase tracking-widest">Find Your Solution</span>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mt-3 mb-4 text-primary-text">
+                What Concerns You Today?
+            </h2>
+            <p class="text-secondary-text max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+                Select your primary skin concern and discover personalised treatment options.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5">
+            <!-- Concern 1 -->
+            <a href="treatments.html" class="group bg-card-bg border border-border rounded-2xl p-5 text-center hover:border-accent hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div class="w-14 h-14 mx-auto rounded-full bg-hover flex items-center justify-center text-accent mb-3 group-hover:bg-gradient-primary-accent group-hover:text-white transition-all duration-300">
+                    <i class="fa-solid fa-face-frown text-xl"></i>
+                </div>
+                <p class="text-sm font-semibold text-primary-text">Acne</p>
+            </a>
+            <!-- Concern 2 -->
+            <a href="treatments.html" class="group bg-card-bg border border-border rounded-2xl p-5 text-center hover:border-accent hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div class="w-14 h-14 mx-auto rounded-full bg-hover flex items-center justify-center text-accent mb-3 group-hover:bg-gradient-primary-accent group-hover:text-white transition-all duration-300">
+                    <i class="fa-solid fa-sun text-xl"></i>
+                </div>
+                <p class="text-sm font-semibold text-primary-text">Pigmentation</p>
+            </a>
+            <!-- Concern 3 -->
+            <a href="treatments.html" class="group bg-card-bg border border-border rounded-2xl p-5 text-center hover:border-accent hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div class="w-14 h-14 mx-auto rounded-full bg-hover flex items-center justify-center text-accent mb-3 group-hover:bg-gradient-primary-accent group-hover:text-white transition-all duration-300">
+                    <i class="fa-solid fa-hourglass-half text-xl"></i>
+                </div>
+                <p class="text-sm font-semibold text-primary-text">Aging</p>
+            </a>
+            <!-- Concern 4 -->
+            <a href="treatments.html" class="group bg-card-bg border border-border rounded-2xl p-5 text-center hover:border-accent hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div class="w-14 h-14 mx-auto rounded-full bg-hover flex items-center justify-center text-accent mb-3 group-hover:bg-gradient-primary-accent group-hover:text-white transition-all duration-300">
+                    <i class="fa-solid fa-droplet-slash text-xl"></i>
+                </div>
+                <p class="text-sm font-semibold text-primary-text">Dryness</p>
+            </a>
+            <!-- Concern 5 -->
+            <a href="treatments.html" class="group bg-card-bg border border-border rounded-2xl p-5 text-center hover:border-accent hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div class="w-14 h-14 mx-auto rounded-full bg-hover flex items-center justify-center text-accent mb-3 group-hover:bg-gradient-primary-accent group-hover:text-white transition-all duration-300">
+                    <i class="fa-solid fa-allergies text-xl"></i>
+                </div>
+                <p class="text-sm font-semibold text-primary-text">Eczema</p>
+            </a>
+            <!-- Concern 6 -->
+            <a href="treatments.html" class="group bg-card-bg border border-border rounded-2xl p-5 text-center hover:border-accent hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div class="w-14 h-14 mx-auto rounded-full bg-hover flex items-center justify-center text-accent mb-3 group-hover:bg-gradient-primary-accent group-hover:text-white transition-all duration-300">
+                    <i class="fa-solid fa-user-shield text-xl"></i>
+                </div>
+                <p class="text-sm font-semibold text-primary-text">Hair Loss</p>
+            </a>
+        </div>
+
+        <div class="text-center mt-10">
+            <a href="treatments.html" class="inline-flex items-center gap-2 text-accent font-semibold text-sm hover:gap-3 transition-all">
+                See all concerns & treatments <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ================= SECTION 3: FEATURED TECHNOLOGY (Card + Overlay) ================= -->
+<section id="technology" class="bg-background py-16 md:py-24 px-4 sm:px-6">
+    <div class="w-full max-w-7xl mx-auto py-8">
+        <div class="text-center mb-12 md:mb-16">
+            <span class="text-accent font-semibold text-sm uppercase tracking-widest">Innovation</span>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mt-3 mb-4 text-primary-text">
+                Advanced Technology We Use
+            </h2>
+            <p class="text-secondary-text max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+                We invest in the latest FDA-approved devices for safer, faster and more effective results.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            <!-- Feature 1 -->
+            <div class="project-card group relative h-[380px] sm:h-[420px] rounded-2xl overflow-hidden border border-border shadow-lg">
+                <img src="assets/bb1.jpg"
+                    alt="Laser technology" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="project-overlay">
+                    <span class="inline-block bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full mb-3 self-start">Laser</span>
+                    <h3 class="text-xl font-bold text-white mb-2">Fractional CO2 Laser</h3>
+                    <p class="text-white/90 text-sm leading-relaxed">Resurface skin, reduce scars and stimulate collagen with minimal downtime.</p>
+                </div>
+            </div>
+            <!-- Feature 2 -->
+            <div class="project-card group relative h-[380px] sm:h-[420px] rounded-2xl overflow-hidden border border-border shadow-lg">
+                <img src="assets/bb2.jpg"
+                    alt="Hydrafacial machine" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="project-overlay">
+                    <span class="inline-block bg-secondary text-slate-900 text-xs font-semibold px-3 py-1 rounded-full mb-3 self-start">Facial</span>
+                    <h3 class="text-xl font-bold text-white mb-2">HydraFacial® Elite</h3>
+                    <p class="text-white/90 text-sm leading-relaxed">Deep cleanse, extract and hydrate in one soothing, results-driven session.</p>
+                </div>
+            </div>
+            <!-- Feature 3 -->
+            <div class="project-card group relative h-[380px] sm:h-[420px] rounded-2xl overflow-hidden border border-border shadow-lg">
+                <img src="assets/bb3.jpg"
+                    alt="Skin analysis device" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="project-overlay">
+                    <span class="inline-block bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full mb-3 self-start">Diagnostics</span>
+                    <h3 class="text-xl font-bold text-white mb-2">VISIA® Skin Analysis</h3>
+                    <p class="text-white/90 text-sm leading-relaxed">See beneath the surface with 3D imaging that maps sun damage, pores and more.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= SECTION 4: MEET THE SPECIALISTS (Horizontal Scroll) ================= -->
+<section id="team" class="bg-hover py-16 md:py-24 px-4 sm:px-6 border-y border-border overflow-hidden">
+    <div class="w-full max-w-7xl mx-auto py-8">
+        <div class="text-center mb-12 md:mb-16">
+            <span class="text-accent font-semibold text-sm uppercase tracking-widest">Our Experts</span>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mt-3 mb-4 text-primary-text">
+                Meet Your Dermatologists
+            </h2>
+            <p class="text-secondary-text max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+                Board-certified specialists dedicated to your skin health and confidence.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Doctor 1 -->
+            <div class="bg-card-bg border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="h-56 overflow-hidden">
+                    <img src="assets/c1.jpg"
+                        alt="Dr. Ananya Sharma" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                </div>
+                <div class="p-5 text-center">
+                    <h3 class="font-bold text-lg text-primary-text">Dr. Ananya Sharma</h3>
+                    <p class="text-accent text-sm font-medium mb-2">MD, Dermatologist</p>
+                    <p class="text-xs text-secondary-text leading-relaxed">15+ years in medical & cosmetic dermatology.</p>
+                </div>
+            </div>
+            <!-- Doctor 2 -->
+            <div class="bg-card-bg border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="h-56 overflow-hidden">
+                    <img src="assets/c2.jpg"
+                        alt="Dr. Rohan Mehta" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                </div>
+                <div class="p-5 text-center">
+                    <h3 class="font-bold text-lg text-primary-text">Dr. Rohan Mehta</h3>
+                    <p class="text-accent text-sm font-medium mb-2">MD, Laser Specialist</p>
+                    <p class="text-xs text-secondary-text leading-relaxed">Expert in laser & aesthetic procedures.</p>
+                </div>
+            </div>
+            <!-- Doctor 3 -->
+            <div class="bg-card-bg border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="h-56 overflow-hidden">
+                    <img src="assets/c3.jpg"
+                        alt="Dr. Kavya Iyer" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                </div>
+                <div class="p-5 text-center">
+                    <h3 class="font-bold text-lg text-primary-text">Dr. Kavya Iyer</h3>
+                    <p class="text-accent text-sm font-medium mb-2">MD, Pediatric Derm</p>
+                    <p class="text-xs text-secondary-text leading-relaxed">Specialised care for sensitive & young skin.</p>
+                </div>
+            </div>
+            <!-- Doctor 4 -->
+            <div class="bg-card-bg border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="h-56 overflow-hidden">
+                    <img src="assets/c4.jpg"
+                        alt="Dr. Arjun Nair" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                </div>
+                <div class="p-5 text-center">
+                    <h3 class="font-bold text-lg text-primary-text">Dr. Arjun Nair</h3>
+                    <p class="text-accent text-sm font-medium mb-2">MD, Cosmetic Derm</p>
+                    <p class="text-xs text-secondary-text leading-relaxed">Injectables, fillers & anti-aging expert.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-10">
+            <a href="doctors.html" class="btn-accent px-8 py-3.5 rounded-lg font-semibold text-sm inline-flex items-center justify-center gap-2">
+                <i class="fa-solid fa-user-doctor"></i> View Full Team
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ================= SECTION 5: BEFORE / AFTER GALLERY ================= -->
+<section id="gallery" class="bg-background py-16 md:py-24 px-4 sm:px-6">
+    <div class="w-full max-w-7xl mx-auto py-8">
+        <div class="text-center mb-12 md:mb-16">
+            <span class="text-accent font-semibold text-sm uppercase tracking-widest">Real Results</span>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mt-3 mb-4 text-primary-text">
+                Before & After Gallery
+            </h2>
+            <p class="text-secondary-text max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+                See the transformations our patients experience with our personalised treatment plans.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Result 1 -->
+            <div class="bg-card-bg border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+                <div class="grid grid-cols-2">
+                    <div class="relative">
+                        <img src="assets/ff.jpg" alt="Before acne treatment" class="w-full h-48 sm:h-56 object-cover">
+                        <span class="absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2.5 py-1 rounded">Before</span>
+                    </div>
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=400&q=80" alt="After acne treatment" class="w-full h-48 sm:h-56 object-cover">
+                        <span class="absolute top-2 right-2 bg-accent text-white text-xs font-semibold px-2.5 py-1 rounded">After</span>
+                    </div>
+                </div>
+                <div class="p-5 text-center">
+                    <h3 class="font-bold text-primary-text mb-1">Acne Scar Treatment</h3>
+                    <p class="text-xs text-secondary-text">3 sessions · 12 weeks</p>
+                </div>
+            </div>
+            <!-- Result 2 -->
+            <div class="bg-card-bg border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+                <div class="grid grid-cols-2">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=400&q=80" alt="Before anti-aging" class="w-full h-48 sm:h-56 object-cover">
+                        <span class="absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2.5 py-1 rounded">Before</span>
+                    </div>
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=400&q=80" alt="After anti-aging" class="w-full h-48 sm:h-56 object-cover">
+                        <span class="absolute top-2 right-2 bg-accent text-white text-xs font-semibold px-2.5 py-1 rounded">After</span>
+                    </div>
+                </div>
+                <div class="p-5 text-center">
+                    <h3 class="font-bold text-primary-text mb-1">Anti-Aging & Wrinkle Reduction</h3>
+                    <p class="text-xs text-secondary-text">2 sessions · 8 weeks</p>
+                </div>
+            </div>
+            <!-- Result 3 -->
+            <div class="bg-card-bg border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+                <div class="grid grid-cols-2">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&q=80" alt="Before pigmentation" class="w-full h-48 sm:h-56 object-cover">
+                        <span class="absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2.5 py-1 rounded">Before</span>
+                    </div>
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=400&q=80" alt="After pigmentation" class="w-full h-48 sm:h-56 object-cover">
+                        <span class="absolute top-2 right-2 bg-accent text-white text-xs font-semibold px-2.5 py-1 rounded">After</span>
+                    </div>
+                </div>
+                <div class="p-5 text-center">
+                    <h3 class="font-bold text-primary-text mb-1">Pigmentation & Melasma</h3>
+                    <p class="text-xs text-secondary-text">4 sessions · 16 weeks</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-center text-xs text-secondary-text mt-8 max-w-2xl mx-auto">
+            <i class="fa-solid fa-circle-info mr-1"></i> Results may vary. All images shared with patient consent.
+        </p>
+    </div>
+</section>
+
+<!-- ================= SECTION 6: FINAL CTA — BANNER WITH IMAGE ================= -->
+<section id="cta2" class="relative overflow-hidden py-16 md:py-24 px-4 sm:px-6 bg-background">
+    <div class="w-full max-w-7xl mx-auto py-8">
+        <div class="relative rounded-3xl overflow-hidden border border-border shadow-2xl">
+            <!-- Background image -->
+            <img src="assets/gf.jpg"
+                alt="Dermatology clinic reception" class="absolute inset-0 w-full h-full object-cover">
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/40"></div>
+            <!-- Content -->
+            <div class="relative z-10 px-6 sm:px-10 lg:px-16 py-14 md:py-20 text-center lg:text-left max-w-2xl">
+                <span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-white/20 text-white backdrop-blur-sm border border-white/30 mb-5">
+                    <i class="fa-solid fa-sparkles mr-1.5"></i> Limited Slots
+                </span>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white mb-5 leading-tight">
+                    Your Skin Deserves Expert Care
+                </h2>
+                <p class="text-white/90 text-base sm:text-lg mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                    Book a consultation today and receive a complimentary skin analysis with our specialist. No obligation, just honest advice.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="appointment.html" class="bg-white text-primary font-semibold px-8 py-3.5 rounded-lg hover:bg-hover transition-all duration-300 inline-flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                        <i class="fa-solid fa-calendar-check"></i> Book Free Consultation
+                    </a>
+                    <a href="contact.html" class="border-2 border-white text-white font-semibold px-8 py-3.5 rounded-lg hover:bg-white hover:text-primary transition-all duration-300 inline-flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-phone"></i> Call Us
+                    </a>
+                </div>
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-6 mt-8 pt-6 border-t border-white/20">
+                    <div class="flex items-center gap-2 text-white/90 text-sm">
+                        <i class="fa-solid fa-shield-heart text-accent"></i> FDA-Approved
+                    </div>
+                    <div class="flex items-center gap-2 text-white/90 text-sm">
+                        <i class="fa-solid fa-user-doctor text-accent"></i> Board-Certified
+                    </div>
+                    <div class="flex items-center gap-2 text-white/90 text-sm">
+                        <i class="fa-solid fa-clock text-accent"></i> Same-Day Appointments
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    </main>
+
+    <!-- Footer Vintage Style -->
+    <footer id="main-footer" class="pt-14 transition-colors duration-300"
+        style="background-color: var(--color-footer-bg);">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8 pb-10 border-b border-slate-700">
+                <div class="col-span-2 md:col-span-2">
+                    <h3 class="text-2xl sm:text-3xl font-serif font-semibold mb-4 text-accent"><i class="fa-solid fa-spa mr-2"></i>Skin Clinic</h3>
+                    <p class="text-sm leading-relaxed max-w-xs text-white">Empowering the next generation of performers through world-class training in dance, drama, and vocals. Join our academy to discover your true artistic potential.</p>
+                    <div class="flex space-x-4 rtl:space-x-reverse mt-6">
+                        <a href="#" class="text-slate-300 hover:text-accent transition"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-slate-300 hover:text-accent transition"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-slate-300 hover:text-accent transition"><i
+                                class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div>
+                                        <h4 class="text-lg font-medium mb-4 text-accent">Treatments</h4>
+                    <ul class="space-y-2">
+                        <li><a href="treatments.html" class="footer-link">Acne Care</a></li>
+                        <li><a href="treatments.html" class="footer-link">Laser Therapy</a></li>
+                        <li><a href="treatments.html" class="footer-link">Anti-Aging</a></li>
+                        <li><a href="treatments.html" class="footer-link">Skin Rejuvenation</a></li>
+                    </ul>
+                </div>
+                <div>
+                                        <h4 class="text-lg font-medium mb-4 text-accent">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="footer-link">Home</a></li>
+                        <li><a href="doctors.html" class="footer-link">Doctors</a></li>
+                        <li><a href="about.html" class="footer-link">About Us</a></li>
+                        <li><a href="contact.html" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-span-2 md:col-span-2 lg:col-span-1">
+                    <h4 class="font-medium text-lg mb-4 text-accent">Newsletter</h4>
+                    <p class="max-w-3xl text-sm mb-4 text-white">Get the latest updates on skin care tips & clinic news.</p>
+                    <input type="email" placeholder="Your email"
+                        class="p-3 text-sm rounded-lg w-full bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-accent text-white outline-none">
+                    <button class="btn-accent font-semibold py-3 rounded-lg w-full mt-3">Subscribe</button>
+                </div>
+            </div>
+            <div class="py-4 text-center text-xs text-white">&copy; 2026 Dermatology & Skin Clinic. All rights reserved. | <span class="hover:text-accent cursor-pointer">Privacy</span> | <span class="hover:text-accent cursor-pointer">Terms</span></div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const html = document.documentElement;
+            
+            // Active Nav Links (Dynamic)
+            const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+            
+            // Desktop Links
+            document.querySelectorAll('.nav-link, .dropdown-menu a').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && href !== '#' && href === currentPath) {
+                    link.classList.add('active');
+                    link.style.color = 'var(--color-accent)';
+                    const parentBtn = link.closest('.dropdown-wrapper')?.querySelector('.dropdown-toggle');
+                    if (parentBtn) {
+                        parentBtn.classList.add('active');
+                        parentBtn.style.color = 'var(--color-accent)';
+                    }
+                }
+            });
+
+            // Mobile Links
+            document.querySelectorAll('#drawer-content a, #drawer-content button.block').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && href !== '#' && href === currentPath) {
+                    if (link.classList.contains('py-1')) {
+                        link.classList.remove('text-secondary');
+                        link.classList.add('text-accent');
+                        const parentBtn = link.closest('div')?.previousElementSibling;
+                        if (parentBtn && parentBtn.tagName === 'BUTTON') {
+                            parentBtn.classList.remove('text-primary-text');
+                            parentBtn.classList.add('text-accent');
+                        }
+                    } else {
+                        link.classList.remove('text-primary-text');
+                        link.classList.add('text-accent');
+                    }
+                }
+            });
+
+            // Dropdown toggles
+            document.querySelectorAll(".dropdown-wrapper").forEach(dropdown => {
+                const btn = dropdown.querySelector(".dropdown-toggle");
+                dropdown.addEventListener("mouseenter", () => { if (window.innerWidth > 1280) dropdown.classList.add("open"); });
+                dropdown.addEventListener("mouseleave", () => { if (window.innerWidth > 1280) dropdown.classList.remove("open"); });
+                if (btn && window.innerWidth <= 1280) btn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); dropdown.classList.toggle("open"); });
+            });
+            document.addEventListener("click", e => { document.querySelectorAll(".dropdown-wrapper").forEach(d => { if (!d.contains(e.target)) d.classList.remove("open"); }); });
+
+            // Theme
+            const themeToggle = document.getElementById('theme-toggle'), mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+            const applyTheme = (theme) => { html.setAttribute('data-theme', theme); document.querySelectorAll('.light-icon').forEach(i => i.classList.toggle('hidden', theme === 'dark')); document.querySelectorAll('.dark-icon').forEach(i => i.classList.toggle('hidden', theme === 'light')); localStorage.setItem('theme', theme); };
+            const initTheme = () => { const stored = localStorage.getItem('theme'); const pref = window.matchMedia('(prefers-color-scheme: dark)').matches; applyTheme(stored === 'dark' || (!stored && pref) ? 'dark' : 'light'); };
+            const toggleTheme = () => { const cur = html.getAttribute('data-theme'); applyTheme(cur === 'light' ? 'dark' : 'light'); };
+            themeToggle?.addEventListener('click', toggleTheme); mobileThemeToggle?.addEventListener('click', toggleTheme); initTheme();
+
+            // Language RTL
+            const langBtn = document.getElementById('lang-icon'), mobileLang = document.getElementById('mobile-lang-icon');
+            const toggleLang = () => { const isRTL = html.getAttribute('dir') === 'rtl'; html.setAttribute('dir', isRTL ? 'ltr' : 'rtl'); localStorage.setItem('language', isRTL ? 'en' : 'ar'); };
+            if (langBtn) langBtn.addEventListener('click', toggleLang);
+            if (mobileLang) mobileLang.addEventListener('click', toggleLang);
+            const savedDir = localStorage.getItem('language') === 'ar' ? 'rtl' : 'ltr'; html.setAttribute('dir', savedDir);
+
+            // Mobile drawer
+            const drawer = document.getElementById('mobile-menu-drawer'), backdrop = document.getElementById('drawer-backdrop'), content = document.getElementById('drawer-content'), openBtn = document.getElementById('mobile-menu-open'), closeBtn = document.getElementById('mobile-menu-close');
+            const openDrawer = () => { drawer.classList.remove('pointer-events-none'); content.classList.remove('translate-y-[-100%]'); backdrop.classList.add('opacity-50', 'pointer-events-auto'); document.body.style.overflow = 'hidden'; };
+            const closeDrawer = () => { content.classList.add('translate-y-[-100%]'); backdrop.classList.remove('opacity-50', 'pointer-events-auto'); content.addEventListener('transitionend', () => { drawer.classList.add('pointer-events-none'); document.body.style.overflow = ''; }, { once: true }); };
+            openBtn?.addEventListener('click', openDrawer); closeBtn?.addEventListener('click', closeDrawer); backdrop?.addEventListener('click', closeDrawer);
+            document.getElementById('mobile-homes-toggle')?.addEventListener('click', () => { document.getElementById('mobile-homes-menu')?.classList.toggle('hidden'); document.getElementById('homes-icon')?.classList.toggle('rotate-180'); });
+            document.getElementById('mobile-dashboard-toggle')?.addEventListener('click', () => { document.getElementById('mobile-dashboard-menu')?.classList.toggle('hidden'); document.getElementById('dashboard-icon')?.classList.toggle('rotate-180'); });
+
+            // Particles
+            const particlesDiv = document.getElementById('particles'); if (particlesDiv) for (let i = 0; i < 35; i++) { let p = document.createElement('div'); p.classList.add('particle'); let size = Math.random() * 6 + 2; p.style.width = size + 'px'; p.style.height = size + 'px'; p.style.left = Math.random() * 100 + '%'; p.style.top = Math.random() * 100 + '%'; p.style.animationDelay = Math.random() * 5 + 's'; p.style.animationDuration = Math.random() * 12 + 8 + 's'; particlesDiv.appendChild(p); }
+            // Scroll reveal
+            const reveals = document.querySelectorAll('.reveal'); const revealScroll = () => { reveals.forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active'); }); }; window.addEventListener('scroll', revealScroll); revealScroll();
+            // Marquee duplication
+            const track = document.querySelector('.marquee-track'); if (track) track.innerHTML += track.innerHTML;
+        });
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+

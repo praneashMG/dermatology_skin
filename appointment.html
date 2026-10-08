@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Skin Clinic · Admin Dashboard</title>
+            <link rel="icon" href="assets/fav.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        /* ===== THEME VARIABLES – TEAL & BLUE ===== */
+        :root, html[data-theme='light'] {
+            --color-background: #FFFFFF;
+            --color-primary-text: #000000;
+            --color-secondary-text: #4B5563;
+            --color-primary: #0F766E;
+            --color-secondary: #0ea5e9;
+            --color-accent: #0F766E;
+            --color-border: #E5E7EB;
+            --color-hover: #F0FDF4;
+            --color-footer-bg: #042F2E;
+            --color-footer-text: #FFFFFF;
+            --color-card-bg: #FFFFFF;
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-danger: #ef4444;
+        }
+        html[data-theme='dark'] {
+            --color-background: #09090B;
+            --color-primary-text: #FFFFFF;
+            --color-secondary-text: #9CA3AF;
+            --color-primary: #14B8A6;
+            --color-secondary: #38BDF8;
+            --color-accent: #14B8A6;
+            --color-border: #27272A;
+            --color-hover: #134E4A;
+            --color-footer-bg: #000000;
+            --color-footer-text: #FFFFFF;
+            --color-card-bg: #18181B;
+            --color-success: #34d399;
+            --color-warning: #fbbf24;
+            --color-danger: #f87171;
+        }
+        body {
+            background: var(--color-background);
+            color: var(--color-primary-text);
+            font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+        .bg-primary { background-color: var(--color-primary); }
+        .bg-accent { background-color: var(--color-accent); }
+        .bg-secondary { background-color: var(--color-secondary); }
+        .bg-card-bg { background-color: var(--color-card-bg); }
+        .bg-background { background-color: var(--color-background); }
+        .bg-hover { background-color: var(--color-hover); }
+        .text-primary-text { color: var(--color-primary-text); }
+        .text-secondary-text { color: var(--color-secondary-text); }
+        .text-accent { color: var(--color-accent); }
+        .text-primary { color: var(--color-primary); }
+        .hover\:text-primary:hover {
+            color: var(--color-primary);
+        }
+
+        .text-secondary { color: var(--color-secondary); }
+        .border-border { border-color: var(--color-border); }
+        .gradient-text {
+            background: linear-gradient(90deg, var(--color-primary), var(--color-accent), var(--color-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            padding-bottom: 0.1em;
+        }
+        /* sidebar */
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            color: var(--color-secondary-text);
+            transition: all 0.18s ease;
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .sidebar-link:hover, .sidebar-link.active {
+            background: linear-gradient(145deg, var(--color-primary), var(--color-secondary));
+            color: white;
+            box-shadow: 0 6px 16px -6px rgba(15, 118, 110, 0.4);
+        }
+        .sidebar-link:hover i, .sidebar-link.active i { color: white; }
+        .sidebar-link.logout:hover { background: var(--color-danger); }
+        /* cards */
+        .dashboard-card {
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 1.5rem;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        .dashboard-card:hover { border-color: var(--color-accent); box-shadow: 0 12px 28px -12px rgba(15,118,110,0.12); }
+        .stat-card {
+            background: var(--color-card-bg);
+            border-radius: 1.25rem;
+            border: 1px solid var(--color-border);
+            transition: transform 0.1s;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+            border-radius: 9999px;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px 0 rgba(15, 118, 110, 0.3);
+        }
+        .btn-primary:hover { background: var(--color-secondary); transform: scale(1.01); }
+        .btn-outline {
+            border: 1.5px solid var(--color-accent);
+            color: var(--color-accent);
+            border-radius: 9999px;
+            background: transparent;
+        }
+        .btn-outline:hover { background: var(--color-accent); color: white; }
+        .data-table th { font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-secondary-text); }
+        .data-table td { padding: 0.9rem 0.5rem; border-bottom: 1px solid var(--color-border); }
+        .pulse-dot { width: 8px; height: 8px; background-color: var(--color-success); border-radius: 50%; box-shadow: 0 0 0 0 rgba(16,185,129,0.5); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 70% { box-shadow: 0 0 0 6px rgba(16,185,129,0); } }
+        #mobile-overlay {
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 55;
+        }
+        #mobile-overlay.active { opacity: 1; pointer-events: auto; }
+        @media (max-width: 1023px) {
+            #sidebar-container { transform: translateX(-100%); transition: transform 0.3s ease-in-out; }
+            #sidebar-container.open-sidebar-mobile { transform: translateX(0); }
+        }
+        .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s, transform 0.5s; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        h1,h2,h3,h4,h5,h6 { font-weight: 500 !important; }
+        p:not(.font-medium), div.text-secondary { font-weight: 400 !important; }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border-radius: 1rem;
+            border: 1.5px solid var(--color-border);
+            background: var(--color-card-bg);
+            color: var(--color-primary-text);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            outline: none;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+        }
+        .form-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            color: var(--color-secondary-text);
+            margin-bottom: 0.35rem;
+            display: block;
+        }
+        .chart-bar {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 100px;
+        }
+        .chart-bar > div {
+            flex: 1;
+            border-radius: 6px 6px 0 0;
+            background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
+            transition: height 0.3s;
+            min-height: 6px;
+        }
+    </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen w-full">
+
+    <!-- TOP BAR -->
+    <header class="border-b border-border bg-card-bg sticky top-0 z-50 w-full">
+        <div class="max-w-[1920px] mx-auto px-2 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-1 sm:gap-3">
+            <div class="flex items-center gap-1 sm:gap-3">
+                <button id="mobile-menu-toggle" class="lg:hidden p-1 sm:p-2 -ml-1 sm:-ml-2 rounded-xl hover:bg-hover transition text-primary-text">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+                <div class="flex items-center gap-1 sm:gap-2">
+                    <a href="index.html" class="text-xl sm:text-3xl font-serif font-semibold flex items-center sm:items-baseline whitespace-nowrap">
+                        <span class="text-accent flex items-center gap-1 sm:gap-2"><i class="fa-solid fa-spa"></i>Skin Clinic</span>
+                        <span class="text-[10px] sm:text-sm text-secondary-text font-medium ml-1 sm:ml-2 shrink-0">Admin</span>
+                    </a>
+                </div>
+            </div>
+            <div class="flex items-center gap-1 sm:gap-4">
+                <button id="theme-toggle" class="p-1 sm:p-2 rounded-full hover:bg-hover transition text-primary-text">
+                    <svg class="w-5 h-5 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <svg class="w-5 h-5 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+                <button id="lang-toggle" class="p-1 sm:p-2 rounded-full hover:bg-hover transition text-primary-text">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                    </svg>
+                </button>
+                <div class="relative flex items-center gap-1 sm:gap-2 pl-1 sm:pl-2 border-l border-border">
+                    <div class="w-7 h-7 sm:w-9 sm:h-9 shrink-0 rounded-full bg-accent/20 flex items-center justify-center text-accent font-medium text-xs sm:text-base"><i class="fas fa-user-shield"></i></div>
+                    <div class="hidden sm:block text-sm"><p class="font-medium">Admin</p><p class="text-xs text-secondary-text">Clinic Manager</p></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-overlay" class="fixed inset-0 z-[55] lg:hidden"></div>
+
+    <main class="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+        <div class="flex flex-col lg:flex-row gap-6 xl:gap-8">
+            <!-- SIDEBAR -->
+            <aside id="sidebar-container" class="fixed lg:static top-0 left-0 h-full lg:h-auto w-80 z-[60] lg:z-10 transform lg:translate-x-0 transition-transform duration-300 bg-sidebar lg:bg-transparent lg:flex-shrink-0 shadow-xl lg:shadow-none">
+                <div class="dashboard-card p-5 lg:sticky lg:top-24 bg-card-bg h-full lg:h-auto border-r lg:border border-border lg:rounded-2xl rounded-none overflow-y-auto">
+                    <div class="flex lg:hidden justify-between items-center mb-6 px-2">
+                        <div class="flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center"><i class="fas fa-user-shield text-white text-xs"></i></div><span class="text-xs font-medium uppercase">Menu</span></div>
+                        <button id="close-sidebar" class="p-2 hover:bg-hover rounded-lg"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="flex items-center gap-3 pb-5 mb-4 border-b border-border">
+                        <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xl"><i class="fas fa-clinic-medical"></i></div>
+                        <div><p class="font-medium text-primary-text">Skin Clinic</p><p class="text-[11px] text-secondary-text flex items-center gap-1"><span class="pulse-dot inline-block"></span> Admin panel</p></div>
+                    </div>
+                    <nav class="flex flex-col gap-1">
+                        <p class="text-[10px] uppercase tracking-wider text-secondary-text font-medium mt-2 mb-2 px-2">Main</p>
+                        <a href="#" data-section="overview" class="sidebar-link active"><i class="fas fa-tachometer-alt w-5"></i><span>Overview</span></a>
+                        <a href="#" data-section="appointments" class="sidebar-link"><i class="fas fa-calendar-check"></i><span>Appointments</span></a>
+                        <a href="#" data-section="patients" class="sidebar-link"><i class="fas fa-users"></i><span>Patients</span></a>
+                        <a href="#" data-section="doctors" class="sidebar-link"><i class="fas fa-user-md"></i><span>Doctors</span></a>
+                        <a href="#" data-section="treatments" class="sidebar-link"><i class="fas fa-spa"></i><span>Treatments</span></a>
+                        <a href="#" data-section="billing" class="sidebar-link"><i class="fas fa-file-invoice-dollar"></i><span>Billing</span></a>
+                        <p class="text-[10px] uppercase tracking-wider text-secondary-text font-medium mt-4 mb-2 px-2">System</p>
+                        <a href="#" data-section="reports" class="sidebar-link"><i class="fas fa-chart-bar"></i><span>Reports</span></a>
+                        <a href="#" data-section="settings" class="sidebar-link"><i class="fas fa-cog"></i><span>Settings</span></a>
+                        <a href="#" data-section="logout" class="sidebar-link logout mt-4 text-red-500"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                    </nav>
+                    <div class="mt-8 pt-4 border-t border-border text-[11px] text-secondary-text">
+                        <div class="flex justify-between"><span>Clinic status</span><span class="text-accent font-medium">● Open</span></div>
+                        <div class="flex justify-between mt-1"><span>Today's appts.</span><span class="font-medium">12</span></div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- RIGHT CONTENT -->
+            <div class="flex-1 min-w-0">
+
+                <!-- OVERVIEW -->
+                <div id="overview" class="admin-section">
+                    <div class="mb-6 reveal active">
+                        <h1 class="text-3xl font-medium">Welcome, <span class="gradient-text">Admin</span> 🩺</h1>
+                        <p class="text-secondary-text mt-1">Clinic performance and operations at a glance.</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 reveal active">
+                        <div class="stat-card p-5"><div class="flex justify-between"><i class="fas fa-calendar-day text-2xl text-accent"></i><span class="text-xs bg-accent/10 px-2 py-1 rounded-full">Today</span></div><p class="text-2xl font-medium mt-3">12</p><p class="text-sm font-medium">Appointments</p><p class="text-xs text-secondary-text">3 pending confirmation</p></div>
+                        <div class="stat-card p-5"><i class="fas fa-users text-2xl text-accent"></i><p class="text-2xl font-medium mt-3">1,248</p><p class="text-sm font-medium">Total Patients</p><p class="text-xs text-secondary-text">+42 this month</p></div>
+                        <div class="stat-card p-5"><i class="fas fa-user-md text-2xl text-secondary"></i><p class="text-2xl font-medium mt-3">8</p><p class="text-sm font-medium">Active Doctors</p><p class="text-xs text-secondary-text">2 on leave today</p></div>
+                        <div class="stat-card p-5"><i class="fas fa-dollar-sign text-2xl text-accent"></i><p class="text-2xl font-medium mt-3">$8,420</p><p class="text-sm font-medium">Revenue (MTD)</p><p class="text-xs text-secondary-text">+18% vs last month</p></div>
+                    </div>
+
+                    <!-- Charts row -->
+                    <div class="grid lg:grid-cols-2 gap-5 mt-6 reveal">
+                        <div class="dashboard-card p-5">
+                            <div class="flex justify-between items-center"><h3 class="font-medium text-lg"><i class="fas fa-chart-line text-accent"></i> Weekly Appointments</h3><span class="text-xs text-secondary-text">Last 7 days</span></div>
+                            <div class="chart-bar mt-5">
+                                <div style="height: 45%;"></div>
+                                <div style="height: 70%;"></div>
+                                <div style="height: 55%;"></div>
+                                <div style="height: 90%;"></div>
+                                <div style="height: 80%;"></div>
+                                <div style="height: 40%;"></div>
+                                <div style="height: 25%;"></div>
+                            </div>
+                            <div class="flex justify-between text-[10px] text-secondary-text mt-2">
+                                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                            </div>
+                        </div>
+                        <div class="dashboard-card p-5">
+                            <div class="flex justify-between items-center"><h3 class="font-medium text-lg"><i class="fas fa-chart-pie text-accent"></i> Treatment Mix</h3><span class="text-xs text-secondary-text">This month</span></div>
+                            <div class="mt-5 space-y-3">
+                                <div><div class="flex justify-between text-sm"><span>Acne & Scar Care</span><span class="font-medium">38%</span></div><div class="h-2 bg-border rounded-full mt-1 overflow-hidden"><div class="h-full bg-accent rounded-full" style="width:38%"></div></div></div>
+                                <div><div class="flex justify-between text-sm"><span>Laser Therapy</span><span class="font-medium">27%</span></div><div class="h-2 bg-border rounded-full mt-1 overflow-hidden"><div class="h-full bg-primary rounded-full" style="width:27%"></div></div></div>
+                                <div><div class="flex justify-between text-sm"><span>Anti-Aging</span><span class="font-medium">20%</span></div><div class="h-2 bg-border rounded-full mt-1 overflow-hidden"><div class="h-full bg-secondary rounded-full" style="width:20%"></div></div></div>
+                                <div><div class="flex justify-between text-sm"><span>Rejuvenation</span><span class="font-medium">15%</span></div><div class="h-2 bg-border rounded-full mt-1 overflow-hidden"><div class="h-full bg-accent/60 rounded-full" style="width:15%"></div></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent activity -->
+                    <div class="dashboard-card p-5 mt-6 reveal">
+                        <h3 class="font-medium text-lg"><i class="fas fa-clock text-accent"></i> Recent activity</h3>
+                        <div class="mt-4 space-y-3">
+                            <div class="flex items-start gap-3 border-b border-border pb-3">
+                                <div class="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xs shrink-0"><i class="fas fa-calendar-plus"></i></div>
+                                <div class="flex-1"><p class="text-sm font-medium">New appointment booked</p><p class="text-xs text-secondary-text">Priya Sharma · Laser Therapy · May 12, 09:30 AM</p></div>
+                                <span class="text-[10px] text-secondary-text">2 min ago</span>
+                            </div>
+                            <div class="flex items-start gap-3 border-b border-border pb-3">
+                                <div class="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-secondary text-xs shrink-0"><i class="fas fa-user-plus"></i></div>
+                                <div class="flex-1"><p class="text-sm font-medium">New patient registered</p><p class="text-xs text-secondary-text">Rahul Verma · ID #DC-2044</p></div>
+                                <span class="text-[10px] text-secondary-text">25 min ago</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xs shrink-0"><i class="fas fa-file-invoice"></i></div>
+                                <div class="flex-1"><p class="text-sm font-medium">Payment received</p><p class="text-xs text-secondary-text">$180 · Priya Sharma · Outstanding balance cleared</p></div>
+                                <span class="text-[10px] text-secondary-text">1 hr ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- APPOINTMENTS -->
+                <div id="appointments" class="admin-section hidden">
+                    <div class="dashboard-card p-6">
+                        <div class="flex flex-wrap justify-between items-center gap-3">
+                            <h2 class="text-xl font-medium"><i class="fas fa-calendar-check text-accent"></i> Appointments</h2>
+                            <button class="btn-primary px-5 py-2 text-sm"><i class="fas fa-plus mr-1"></i> New Appointment</button>
+                        </div>
+                        <div class="overflow-x-auto mt-5">
+                            <table class="w-full text-sm data-table whitespace-nowrap">
+                                <thead><tr><th>Patient</th><th>Doctor</th><th>Treatment</th><th>Date & Time</th><th>Status</th><th>Action</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Priya Sharma</td><td>Dr. A. Mehta</td><td>Laser Therapy</td><td>May 12, 09:30 AM</td><td><span class="status-badge bg-green-100 text-green-700">Confirmed</span></td><td><button class="text-accent text-xs">Edit</button></td></tr>
+                                    <tr><td>Rahul Verma</td><td>Dr. S. Rao</td><td>Botox consultation</td><td>May 12, 11:00 AM</td><td><span class="status-badge bg-yellow-100 text-yellow-700">Pending</span></td><td><button class="text-accent text-xs">Edit</button></td></tr>
+                                    <tr><td>Anjali Nair</td><td>Dr. K. Joshi</td><td>Hydrafacial</td><td>May 12, 02:30 PM</td><td><span class="status-badge bg-green-100 text-green-700">Confirmed</span></td><td><button class="text-accent text-xs">Edit</button></td></tr>
+                                    <tr><td>Vikram Singh</td><td>Dr. A. Mehta</td><td>Acne follow-up</td><td>May 13, 10:00 AM</td><td><span class="status-badge bg-green-100 text-green-700">Confirmed</span></td><td><button class="text-accent text-xs">Edit</button></td></tr>
+                                    <tr><td>Meera Joshi</td><td>Dr. P. Nair</td><td>Skin check</td><td>May 13, 04:15 PM</td><td><span class="status-badge bg-yellow-100 text-yellow-700">Pending</span></td><td><button class="text-accent text-xs">Edit</button></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PATIENTS -->
+                <div id="patients" class="admin-section hidden">
+                    <div class="dashboard-card p-6">
+                        <div class="flex flex-wrap justify-between items-center gap-3">
+                            <h2 class="text-xl font-medium"><i class="fas fa-users text-accent"></i> Patients</h2>
+                            <div class="flex gap-2">
+                                <input type="text" placeholder="Search patient..." class="form-input py-2 text-sm w-48">
+                                <button class="btn-outline px-4 py-2 text-sm">Filter</button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto mt-5">
+                            <table class="w-full text-sm data-table whitespace-nowrap">
+                                <thead><tr><th>ID</th><th>Name</th><th>Contact</th><th>Last Visit</th><th>Treatments</th><th>Status</th></tr></thead>
+                                <tbody>
+                                    <tr><td>#DC-2043</td><td>Priya Sharma</td><td>+91 98765 43210</td><td>Apr 28, 2026</td><td>4</td><td><span class="status-badge bg-green-100 text-green-700">Active</span></td></tr>
+                                    <tr><td>#DC-2044</td><td>Rahul Verma</td><td>+91 87654 32109</td><td>May 1, 2026</td><td>2</td><td><span class="status-badge bg-green-100 text-green-700">Active</span></td></tr>
+                                    <tr><td>#DC-2045</td><td>Anjali Nair</td><td>+91 76543 21098</td><td>Apr 22, 2026</td><td>6</td><td><span class="status-badge bg-green-100 text-green-700">Active</span></td></tr>
+                                    <tr><td>#DC-2046</td><td>Vikram Singh</td><td>+91 65432 10987</td><td>Mar 15, 2026</td><td>1</td><td><span class="status-badge bg-gray-100 text-gray-700">Inactive</span></td></tr>
+                                    <tr><td>#DC-2047</td><td>Meera Joshi</td><td>+91 54321 09876</td><td>May 5, 2026</td><td>3</td><td><span class="status-badge bg-green-100 text-green-700">Active</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOCTORS -->
+                <div id="doctors" class="admin-section hidden">
+                    <div class="dashboard-card p-6">
+                        <div class="flex flex-wrap justify-between items-center gap-3">
+                            <h2 class="text-xl font-medium"><i class="fas fa-user-md text-accent"></i> Doctors</h2>
+                            <button class="btn-primary px-5 py-2 text-sm"><i class="fas fa-plus mr-1"></i> Add Doctor</button>
+                        </div>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
+                            <div class="border border-border rounded-xl p-4 flex items-start gap-3">
+                                <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center text-accent text-lg"><i class="fas fa-user-md"></i></div>
+                                <div class="flex-1"><p class="font-medium">Dr. A. Mehta</p><p class="text-xs text-secondary-text">Acne & Laser</p><p class="text-xs text-accent mt-1"><span class="pulse-dot inline-block mr-1"></span>Available today</p></div>
+                                <button class="text-accent text-xs">Edit</button>
+                            </div>
+                            <div class="border border-border rounded-xl p-4 flex items-start gap-3">
+                                <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center text-accent text-lg"><i class="fas fa-user-md"></i></div>
+                                <div class="flex-1"><p class="font-medium">Dr. S. Rao</p><p class="text-xs text-secondary-text">Anti-Aging</p><p class="text-xs text-yellow-600 mt-1"><i class="fa-regular fa-clock mr-1"></i>On leave</p></div>
+                                <button class="text-accent text-xs">Edit</button>
+                            </div>
+                            <div class="border border-border rounded-xl p-4 flex items-start gap-3">
+                                <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center text-accent text-lg"><i class="fas fa-user-md"></i></div>
+                                <div class="flex-1"><p class="font-medium">Dr. K. Joshi</p><p class="text-xs text-secondary-text">Skin Rejuvenation</p><p class="text-xs text-accent mt-1"><span class="pulse-dot inline-block mr-1"></span>Available today</p></div>
+                                <button class="text-accent text-xs">Edit</button>
+                            </div>
+                            <div class="border border-border rounded-xl p-4 flex items-start gap-3">
+                                <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center text-accent text-lg"><i class="fas fa-user-md"></i></div>
+                                <div class="flex-1"><p class="font-medium">Dr. P. Nair</p><p class="text-xs text-secondary-text">Pediatric Derm</p><p class="text-xs text-accent mt-1"><span class="pulse-dot inline-block mr-1"></span>Available Fri</p></div>
+                                <button class="text-accent text-xs">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TREATMENTS -->
+                <div id="treatments" class="admin-section hidden">
+                    <div class="dashboard-card p-6">
+                        <div class="flex flex-wrap justify-between items-center gap-3">
+                            <h2 class="text-xl font-medium"><i class="fas fa-spa text-accent"></i> Treatments</h2>
+                            <button class="btn-primary px-5 py-2 text-sm"><i class="fas fa-plus mr-1"></i> Add Treatment</button>
+                        </div>
+                        <div class="overflow-x-auto mt-5">
+                            <table class="w-full text-sm data-table whitespace-nowrap">
+                                <thead><tr><th>Treatment</th><th>Category</th><th>Duration</th><th>Price</th><th>Status</th><th>Action</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Acne Consultation</td><td>Acne & Scar</td><td>30 min</td><td>$50</td><td><span class="status-badge bg-green-100 text-green-700">Active</span></td><td><button class="text-accent text-xs">Edit</button></td></tr>
+                                    <tr><td>Laser Therapy Session</td><td>Laser & Light</td><td>45 min</td><td>$95</td><td><span class="status-badge bg-green-100 text-green-700">Active</span></td><td><button class="text-accent text-xs">Edit</button></td></tr>
+                                    <tr><td>Hydrafacial</td><td>Rejuvenation</td><td>60 min</td><td>$85</td><td><span class="status-badge bg-green-100 text-green-700">Active</span></td><td><button class="text-accent text-xs">Edit</button></td></tr>
+                                    <tr><td>Botox (per unit)</td><td>Anti-Aging</td><td>30 min</td><td>$12</td><td><span class="status-badge bg-green-100 text-green-700">Active</span></td><td><button class="text-accent text-xs">Edit</button></td></tr>
+                                    <tr><td>Chemical Peel</td><td>Rejuvenation</td><td>40 min</td><td>$110</td><td><span class="status-badge bg-yellow-100 text-yellow-700">Draft</span></td><td><button class="text-accent text-xs">Edit</button></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BILLING -->
+                <div id="billing" class="admin-section hidden">
+                    <div class="dashboard-card p-6">
+                        <h2 class="text-xl font-medium"><i class="fas fa-file-invoice-dollar text-accent"></i> Billing & Invoices</h2>
+                        <div class="grid sm:grid-cols-3 gap-4 mt-5">
+                            <div class="bg-hover p-4 rounded-xl"><p class="text-xs text-secondary-text">Total billed (MTD)</p><p class="text-2xl font-medium text-accent mt-1">$12,840</p></div>
+                            <div class="bg-hover p-4 rounded-xl"><p class="text-xs text-secondary-text">Collected</p><p class="text-2xl font-medium text-green-600 mt-1">$8,420</p></div>
+                            <div class="bg-hover p-4 rounded-xl"><p class="text-xs text-secondary-text">Outstanding</p><p class="text-2xl font-medium text-yellow-600 mt-1">$4,420</p></div>
+                        </div>
+                        <div class="overflow-x-auto mt-5">
+                            <table class="w-full text-sm data-table whitespace-nowrap">
+                                <thead><tr><th>Invoice</th><th>Patient</th><th>Amount</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+                                <tbody>
+                                    <tr><td>#INV-1042</td><td>Priya Sharma</td><td>$180</td><td>May 1, 2026</td><td><span class="status-badge bg-yellow-100 text-yellow-700">Pending</span></td><td><button class="text-accent text-xs">Send</button></td></tr>
+                                    <tr><td>#INV-1041</td><td>Rahul Verma</td><td>$50</td><td>May 1, 2026</td><td><span class="status-badge bg-green-100 text-green-700">Paid</span></td><td><button class="text-accent text-xs">View</button></td></tr>
+                                    <tr><td>#INV-1040</td><td>Anjali Nair</td><td>$85</td><td>Apr 28, 2026</td><td><span class="status-badge bg-green-100 text-green-700">Paid</span></td><td><button class="text-accent text-xs">View</button></td></tr>
+                                    <tr><td>#INV-1039</td><td>Vikram Singh</td><td>$95</td><td>Apr 25, 2026</td><td><span class="status-badge bg-red-100 text-red-700">Overdue</span></td><td><button class="text-accent text-xs">Remind</button></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REPORTS -->
+                <div id="reports" class="admin-section hidden">
+                    <div class="dashboard-card p-6">
+                        <h2 class="text-xl font-medium"><i class="fas fa-chart-bar text-accent"></i> Reports & Analytics</h2>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+                            <div class="bg-hover p-4 rounded-xl"><p class="text-xs text-secondary-text">Patient growth</p><p class="text-2xl font-medium text-accent mt-1">+42</p><p class="text-xs text-secondary-text">this month</p></div>
+                            <div class="bg-hover p-4 rounded-xl"><p class="text-xs text-secondary-text">Avg. visit value</p><p class="text-2xl font-medium text-accent mt-1">$128</p><p class="text-xs text-secondary-text">+6% vs last month</p></div>
+                            <div class="bg-hover p-4 rounded-xl"><p class="text-xs text-secondary-text">No-show rate</p><p class="text-2xl font-medium text-yellow-600 mt-1">4.2%</p><p class="text-xs text-secondary-text">-1.1% vs last month</p></div>
+                            <div class="bg-hover p-4 rounded-xl"><p class="text-xs text-secondary-text">Retention</p><p class="text-2xl font-medium text-accent mt-1">78%</p><p class="text-xs text-secondary-text">returning patients</p></div>
+                        </div>
+                        <div class="mt-6 border border-border rounded-xl p-5">
+                            <h3 class="font-medium mb-3"><i class="fas fa-file-export text-accent mr-2"></i>Export reports</h3>
+                            <div class="flex flex-wrap gap-3">
+                                <button class="btn-outline px-5 py-2 text-sm"><i class="fas fa-file-csv mr-1"></i> Appointments CSV</button>
+                                <button class="btn-outline px-5 py-2 text-sm"><i class="fas fa-file-csv mr-1"></i> Revenue CSV</button>
+                                <button class="btn-outline px-5 py-2 text-sm"><i class="fas fa-file-pdf mr-1"></i> Monthly PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SETTINGS -->
+                <div id="settings" class="admin-section hidden">
+                    <div class="dashboard-card p-6">
+                        <h2 class="text-xl font-medium"><i class="fas fa-cog text-accent"></i> Settings</h2>
+                        <div class="grid md:grid-cols-2 gap-5 mt-5">
+                            <div>
+                                <label class="form-label">Clinic name</label>
+                                <input type="text" class="form-input" value="Dermatology & Skin Clinic">
+                            </div>
+                            <div>
+                                <label class="form-label">Contact email</label>
+                                <input type="email" class="form-input" value="admin@skinclinic.com">
+                            </div>
+                            <div>
+                                <label class="form-label">Phone</label>
+                                <input type="tel" class="form-input" value="+1 800 555 1234">
+                            </div>
+                            <div>
+                                <label class="form-label">Timezone</label>
+                                <select class="form-select"><option>GMT+5:30 (IST)</option><option>GMT+0 (UTC)</option><option>GMT-5 (EST)</option></select>
+                            </div>
+                        </div>
+                        <div class="mt-5 space-y-3">
+                            <div class="flex items-center justify-between border border-border rounded-xl p-4">
+                                <div><p class="font-medium text-sm">Email notifications</p><p class="text-xs text-secondary-text">Send appointment reminders to patients</p></div>
+                                <input type="checkbox" class="accent-[var(--color-accent)] w-5 h-5" checked>
+                            </div>
+                            <div class="flex items-center justify-between border border-border rounded-xl p-4">
+                                <div><p class="font-medium text-sm">SMS reminders</p><p class="text-xs text-secondary-text">Send SMS 24 hours before appointment</p></div>
+                                <input type="checkbox" class="accent-[var(--color-accent)] w-5 h-5" checked>
+                            </div>
+                            <div class="flex items-center justify-between border border-border rounded-xl p-4">
+                                <div><p class="font-medium text-sm">Online booking</p><p class="text-xs text-secondary-text">Allow patients to book via portal</p></div>
+                                <input type="checkbox" class="accent-[var(--color-accent)] w-5 h-5" checked>
+                            </div>
+                        </div>
+                        <button class="btn-primary px-8 py-3 mt-5 text-sm font-medium">Save Settings</button>
+                    </div>
+                </div>
+
+                <!-- LOGOUT -->
+                <div id="logout" class="admin-section hidden">
+                    <div class="dashboard-card p-10 text-center max-w-md mx-auto">
+                        <i class="fas fa-lock text-5xl text-accent"></i>
+                        <h2 class="text-2xl font-medium mt-3">Sign Out</h2>
+                        <p class="text-secondary-text">You will be redirected to login.</p>
+                        <div class="mt-6 flex gap-3 justify-center">
+                            <button onclick="window.location.href='login.html'" class="bg-red-500 text-white px-6 py-2 rounded-full">Logout</button>
+                            <button onclick="activateSection('overview')" class="border-border border px-5 py-2 rounded-full">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="mt-12 text-center text-[10px] text-secondary-text border-t border-border pt-8 pb-12">
+                    <p class="uppercase tracking-widest font-medium">© 2026 Skin Clinic — Admin Dashboard</p>
+                    <div class="flex justify-center gap-5 mt-3">
+                        <span class="hover:text-accent cursor-pointer">Help</span>
+                        <span class="hover:text-accent cursor-pointer">Contact</span>
+                        <span class="hover:text-accent cursor-pointer">Privacy</span>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating call button -->
+    <a href="tel:18005551234" class="fixed bottom-6 right-6 bg-accent text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl z-[90] hover:bg-secondary transition-transform hover:scale-110 flex md:hidden" style="box-shadow: 0 4px 14px rgba(15,118,110,0.5);">
+        <i class="fas fa-phone text-2xl"></i>
+    </a>
+
+    <script>
+        (function() {
+            const html = document.documentElement;
+            // theme toggle
+            const themeBtn = document.getElementById('theme-toggle');
+            const lightIcons = document.querySelectorAll('.light-icon'), darkIcons = document.querySelectorAll('.dark-icon');
+            function setTheme(theme) {
+                html.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                lightIcons.forEach(i => i.classList.toggle('hidden', theme === 'dark'));
+                darkIcons.forEach(i => i.classList.toggle('hidden', theme === 'light'));
+            }
+            const savedTheme = localStorage.getItem('theme') || 'light'; setTheme(savedTheme);
+            themeBtn?.addEventListener('click', () => { const cur = html.getAttribute('data-theme'); setTheme(cur === 'light' ? 'dark' : 'light'); });
+            // RTL
+            const langBtn = document.getElementById('lang-toggle');
+            function setDir(dir) { html.setAttribute('dir', dir); localStorage.setItem('language', dir === 'rtl' ? 'ar' : 'en'); }
+            const savedDir = localStorage.getItem('language') === 'ar' ? 'rtl' : 'ltr'; setDir(savedDir);
+            langBtn?.addEventListener('click', () => { const cur = html.getAttribute('dir'); setDir(cur === 'ltr' ? 'rtl' : 'ltr'); });
+            // Mobile sidebar
+            const menuToggle = document.getElementById('mobile-menu-toggle'), closeSide = document.getElementById('close-sidebar'), sidebar = document.getElementById('sidebar-container'), overlay = document.getElementById('mobile-overlay');
+            function toggleMobile(open) { if(open) { sidebar.classList.add('open-sidebar-mobile'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; } else { sidebar.classList.remove('open-sidebar-mobile'); overlay.classList.remove('active'); document.body.style.overflow = ''; } }
+            menuToggle?.addEventListener('click', () => toggleMobile(true)); closeSide?.addEventListener('click', () => toggleMobile(false)); overlay?.addEventListener('click', () => toggleMobile(false));
+            // Navigation
+            const sections = ['overview','appointments','patients','doctors','treatments','billing','reports','settings','logout'];
+            const links = document.querySelectorAll('.sidebar-link');
+            window.activateSection = function(sectionId) {
+                sections.forEach(id => { const el = document.getElementById(id); if(el) el.classList.add('hidden'); });
+                const target = document.getElementById(sectionId); if(target) target.classList.remove('hidden');
+                links.forEach(link => { link.classList.remove('active'); if(link.dataset.section === sectionId) link.classList.add('active'); });
+                if(window.innerWidth < 1024) toggleMobile(false);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+            links.forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); const sec = link.dataset.section; if(sec) activateSection(sec); }); });
+            activateSection('overview');
+            // reveal
+            const reveals = document.querySelectorAll('.reveal');
+            const obs = new IntersectionObserver((entries) => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); }); }, { threshold: 0.1 });
+            reveals.forEach(r => obs.observe(r));
+        })();
+    </script>
+</body>
+</html>
