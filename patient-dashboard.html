@@ -25,6 +25,7 @@
             --color-card-bg: #FFFFFF;
         }
         html[data-theme='dark'] {
+            color-scheme: dark;
             --color-background: #09090B;
             --color-primary-text: #FFFFFF;
             --color-secondary-text: #9CA3AF;
@@ -36,6 +37,27 @@
             --color-footer-bg: #000000;
             --color-footer-text: #FFFFFF;
             --color-card-bg: #18181B;
+        }
+
+        /* Date picker calendar indicator pure white in dark mode */
+        input[type="date"] {
+            color-scheme: light;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        html[data-theme='dark'] input[type="date"] {
+            color-scheme: dark;
+            color: #FFFFFF;
+        }
+        html[data-theme='dark'] input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: brightness(0) invert(1) !important;
+            opacity: 1 !important;
+            cursor: pointer;
+        }
+        html[data-theme='dark'] input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 0.8 !important;
         }
         body {
             background: var(--color-background);
