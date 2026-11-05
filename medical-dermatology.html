@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/fav.png" type="image/jpeg">
+    <title>Medical Dermatology · Clinical Diagnosis & Care | Skin Clinic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root, html[data-theme='light'] {
+            --color-background: #FFFFFF;
+            --color-primary-text: #0F172A;
+            --color-secondary-text: #475569;
+            --color-primary: #0F766E;
+            --color-secondary: #0284C7;
+            --color-accent: #0F766E;
+            --color-border: #E2E8F0;
+            --color-hover: #F0FDFA;
+            --color-footer-bg: #042F2E;
+            --color-footer-text: #FFFFFF;
+            --color-card-bg: #FFFFFF;
+        }
+
+        html[data-theme='dark'] {
+            --color-background: #09090B;
+            --color-primary-text: #FFFFFF;
+            --color-secondary-text: #94A3B8;
+            --color-primary: #14B8A6;
+            --color-secondary: #38BDF8;
+            --color-accent: #14B8A6;
+            --color-border: #27272A;
+            --color-hover: #134E4A;
+            --color-footer-bg: #000000;
+            --color-footer-text: #FFFFFF;
+            --color-card-bg: #18181B;
+        }
+
+        html, body {
+            background: var(--color-background);
+            color: var(--color-primary-text);
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .bg-primary { background-color: var(--color-primary); }
+        .bg-accent { background-color: var(--color-accent); }
+        .bg-card-bg { background-color: var(--color-card-bg); }
+        .bg-hover { background-color: var(--color-hover); }
+        .bg-background { background-color: var(--color-background); }
+        .border-border { border-color: var(--color-border); }
+        .text-accent { color: var(--color-accent); }
+        .text-primary { color: var(--color-primary); }
+        .text-secondary-text { color: var(--color-secondary-text); }
+        .text-primary-text { color: var(--color-primary-text); }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: #FFFFFF !important;
+            border: 2px solid var(--color-primary);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: var(--color-secondary);
+            border-color: var(--color-secondary);
+            color: #FFFFFF !important;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(15, 118, 110, 0.4);
+        }
+
+        .btn-accent {
+            background-color: transparent;
+            color: var(--color-accent) !important;
+            border: 2px solid var(--color-accent);
+            transition: all 0.3s ease;
+        }
+        .btn-accent:hover {
+            background-color: var(--color-accent);
+            color: #FFFFFF !important;
+            transform: translateY(-2px);
+        }
+
+        .dropdown-wrapper { position: relative; }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            min-width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px);
+            transition: all 0.2s ease;
+            z-index: 50;
+            padding: 0.5rem 0;
+        }
+        .dropdown-wrapper.open .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: var(--color-primary-text);
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+        }
+        .dropdown-menu a:hover {
+            background-color: var(--color-hover);
+            color: var(--color-accent);
+        }
+        html[dir="rtl"] .dropdown-menu { left: auto; right: 0; }
+    </style>
+</head>
+
+<body class="antialiased">
+    <!-- Header -->
+            <!-- Navigation Bar -->
+    <header class="fixed top-3 left-0 w-full z-50 px-3 sm:px-6" id="main-header">
+        <nav class="mx-auto max-w-[1400px] px-4 sm:px-6 py-2.5 flex items-center justify-between rounded-2xl shadow-lg border border-border bg-card-bg/95 backdrop-blur-md"
+            style="background-color: var(--color-card-bg);">
+            <!-- Clinic Logo & Brand -->
+            <a href="index.html" class="flex items-center gap-2 text-xl sm:text-2xl font-serif font-bold text-accent shrink-0 tracking-tight transition hover:opacity-90">
+                <i class="fa-solid fa-spa text-primary text-xl sm:text-2xl"></i>
+                <span class="whitespace-nowrap">Skin Clinic</span>
+            </a>
+
+            <!-- Desktop Navigation Links (Centered, Single-Line, Clean Whitespace) -->
+            <div class="hidden xl:flex items-center justify-center flex-1 px-4 lg:px-6">
+                <div class="flex items-center space-x-5 lg:space-x-7 rtl:space-x-reverse font-medium text-sm whitespace-nowrap">
+                    <!-- Home Dropdown -->
+                    <div class="dropdown-wrapper">
+                        <button class="nav-link flex items-center gap-1.5 py-1.5 text-primary-text hover:text-accent transition">
+                            <span>Home</span>
+                            <svg class="w-3.5 h-3.5 transition-transform opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="index.html">Home 1 (Clinical Chic)</a>
+                            <a href="home2.html">Home 2 (Modern Aesthetics)</a>
+                        </div>
+                    </div>
+
+                    <!-- Treatments Dropdown -->
+                    <div class="dropdown-wrapper">
+                        <button class="nav-link flex items-center gap-1.5 py-1.5 text-accent font-semibold hover:text-accent transition">
+                            <span>Treatments</span>
+                            <svg class="w-3.5 h-3.5 transition-transform opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="medical-dermatology.html">Medical Dermatology</a>
+                            <a href="cosmetic-treatments.html">Cosmetic & Aesthetics</a>
+                            <a href="treatments.html">All Treatments Overview</a>
+                        </div>
+                    </div>
+
+                    <!-- Doctors Dropdown -->
+                    <div class="dropdown-wrapper">
+                        <button class="nav-link flex items-center gap-1.5 py-1.5 text-primary-text hover:text-accent transition">
+                            <span>Doctors</span>
+                            <svg class="w-3.5 h-3.5 transition-transform opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="doctors.html">Our Medical Team</a>
+                            <a href="doctor-profiles.html">Doctor Profiles & Credentials</a>
+                        </div>
+                    </div>
+
+                    <!-- Results & Reviews -->
+                    <a href="patient-results.html" class="nav-link py-1.5 text-primary-text hover:text-accent transition">Results & Reviews</a>
+
+                    <!-- Shop & Blog -->
+                    <a href="skincare-products.html" class="nav-link py-1.5 text-primary-text hover:text-accent transition">Shop & Blog</a>
+
+                    <!-- About -->
+                    <a href="about.html" class="nav-link py-1.5 text-primary-text hover:text-accent transition">About</a>
+
+                    <!-- Contact -->
+                    <a href="contact.html" class="nav-link py-1.5 text-primary-text hover:text-accent transition">Contact</a>
+
+                    <!-- Portals Dropdown -->
+                    <div class="dropdown-wrapper">
+                        <button class="nav-link flex items-center gap-1.5 py-1.5 text-primary-text hover:text-accent transition">
+                            <span>Portal</span>
+                            <svg class="w-3.5 h-3.5 transition-transform opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="patient-dashboard.html">Patient Portal</a>
+                            <a href="appointment.html">Admin Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Actions (Theme, Direction, Primary Book CTA, Login) -->
+            <div class="hidden xl:flex items-center space-x-2.5 rtl:space-x-reverse shrink-0">
+                <button id="theme-toggle" class="icon-btn text-primary hover:text-accent p-2 rounded-lg border border-border hover:border-accent hover:bg-hover transition duration-200" title="Toggle Theme" aria-label="Toggle Dark/Light Mode">
+                    <svg class="w-4 h-4 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <svg class="w-4 h-4 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+                <button id="lang-icon" class="text-primary hover:text-accent p-2 rounded-lg border border-border hover:border-accent hover:bg-hover transition duration-200" title="RTL/LTR" aria-label="Toggle Direction">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                </button>
+                <a href="book-appointment.html" class="btn-primary px-4 py-2 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 whitespace-nowrap shadow-sm hover:shadow-md transition-all">
+                    <i class="fa-solid fa-calendar-check text-xs"></i>
+                    <span>Book Appointment</span>
+                </a>
+                <a href="login.html" class="px-3.5 py-2 rounded-xl text-sm font-medium border border-border hover:border-accent hover:bg-hover text-primary-text hover:text-accent transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-right-to-bracket text-xs text-accent"></i>
+                    <span>Login</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Open Button -->
+            <div class="flex items-center xl:hidden">
+                <button id="mobile-menu-open" class="icon-btn text-primary hover:text-accent p-2 rounded-lg border border-border hover:bg-hover" aria-label="Open Mobile Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Drawer -->
+        <!-- Mobile Drawer Menu -->
+    <div id="mobile-menu-drawer" class="fixed inset-0 z-50 pointer-events-none transition-all duration-300">
+        <div id="drawer-backdrop" class="absolute inset-0 bg-black/60 opacity-0 transition-opacity duration-300 pointer-events-none backdrop-blur-sm"></div>
+        <div id="drawer-content" class="absolute top-0 left-0 right-0 bg-card-bg rounded-b-3xl shadow-2xl p-5 sm:p-6 xl:hidden max-h-[90vh] overflow-y-auto transform translate-y-[-100%] transition-transform duration-300 ease-out border-b border-border" style="background-color: var(--color-card-bg);">
+            <!-- Header Row -->
+            <div class="flex justify-between items-center pb-4 border-b border-border">
+                <a href="index.html" class="flex items-center gap-2 text-xl font-serif font-bold text-accent">
+                    <i class="fa-solid fa-spa text-primary"></i>
+                    <span>Skin Clinic</span>
+                </a>
+                <button id="mobile-menu-close" class="text-primary hover:text-accent p-2 rounded-xl border border-border hover:bg-hover transition" aria-label="Close Mobile Menu">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- Navigation Items with Neat Dropdowns / Accordions -->
+            <nav class="flex flex-col space-y-1 py-3 text-sm">
+                <!-- Home Accordion -->
+                <div class="border-b border-border/40 pb-1">
+                    <button type="button" class="mobile-accordion-btn flex items-center justify-between w-full py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition text-left" onclick="toggleMobileAccordion('mobile-home-menu', this)">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-house text-sm text-accent w-4 text-center"></i>
+                            <span>Home</span>
+                        </span>
+                        <svg class="w-4 h-4 transition-transform duration-200 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-home-menu" class="hidden pl-8 pr-2 py-1.5 space-y-1 border-l-2 border-accent/40 ml-4 my-1">
+                        <a href="index.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Home 1 (Clinical Chic)</a>
+                        <a href="home2.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Home 2 (Modern Aesthetics)</a>
+                    </div>
+                </div>
+
+                <!-- Treatments Accordion -->
+                <div class="border-b border-border/40 pb-1">
+                    <button type="button" class="mobile-accordion-btn flex items-center justify-between w-full py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition text-left" onclick="toggleMobileAccordion('mobile-treat-menu', this)">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-wand-magic-sparkles text-sm text-accent w-4 text-center"></i>
+                            <span>Treatments</span>
+                        </span>
+                        <svg class="w-4 h-4 transition-transform duration-200 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-treat-menu" class="hidden pl-8 pr-2 py-1.5 space-y-1 border-l-2 border-accent/40 ml-4 my-1">
+                        <a href="medical-dermatology.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Medical Dermatology</a>
+                        <a href="cosmetic-treatments.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Cosmetic & Aesthetics</a>
+                        <a href="treatments.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">All Treatments Overview</a>
+                    </div>
+                </div>
+
+                <!-- Doctors Accordion -->
+                <div class="border-b border-border/40 pb-1">
+                    <button type="button" class="mobile-accordion-btn flex items-center justify-between w-full py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition text-left" onclick="toggleMobileAccordion('mobile-doc-menu', this)">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-user-doctor text-sm text-accent w-4 text-center"></i>
+                            <span>Doctors</span>
+                        </span>
+                        <svg class="w-4 h-4 transition-transform duration-200 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-doc-menu" class="hidden pl-8 pr-2 py-1.5 space-y-1 border-l-2 border-accent/40 ml-4 my-1">
+                        <a href="doctors.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Our Medical Team</a>
+                        <a href="doctor-profiles.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Doctor Profiles & Credentials</a>
+                    </div>
+                </div>
+
+                <!-- Standard Links -->
+                <a href="patient-results.html" class="flex items-center gap-2.5 py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition">
+                    <i class="fa-solid fa-images text-sm text-accent w-4 text-center"></i>
+                    <span>Results & Reviews</span>
+                </a>
+                <a href="skincare-products.html" class="flex items-center gap-2.5 py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition">
+                    <i class="fa-solid fa-pump-medical text-sm text-accent w-4 text-center"></i>
+                    <span>Shop & Skincare Blog</span>
+                </a>
+                <a href="about.html" class="flex items-center gap-2.5 py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition">
+                    <i class="fa-solid fa-circle-info text-sm text-accent w-4 text-center"></i>
+                    <span>About Us</span>
+                </a>
+                <a href="contact.html" class="flex items-center gap-2.5 py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition">
+                    <i class="fa-solid fa-location-dot text-sm text-accent w-4 text-center"></i>
+                    <span>Contact & Location</span>
+                </a>
+
+                <!-- Portal Accordion -->
+                <div class="border-t border-border/40 pt-1">
+                    <button type="button" class="mobile-accordion-btn flex items-center justify-between w-full py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition text-left" onclick="toggleMobileAccordion('mobile-portal-menu', this)">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-hospital-user text-sm text-accent w-4 text-center"></i>
+                            <span>Portal & Management</span>
+                        </span>
+                        <svg class="w-4 h-4 transition-transform duration-200 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-portal-menu" class="hidden pl-8 pr-2 py-1.5 space-y-1 border-l-2 border-accent/40 ml-4 my-1">
+                        <a href="patient-dashboard.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Patient Portal</a>
+                        <a href="appointment.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Admin Dashboard</a>
+                    </div>
+                </div>
+
+                <!-- Action CTA Buttons -->
+                <div class="pt-4 mt-2 border-t border-border flex flex-col sm:flex-row gap-2.5">
+                    <a href="book-appointment.html" class="btn-primary flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition">
+                        <i class="fa-solid fa-calendar-check text-xs"></i>
+                        <span>Book Appointment</span>
+                    </a>
+                    <a href="login.html" class="flex-1 py-2.5 rounded-xl border border-border hover:border-accent hover:bg-hover text-primary-text hover:text-accent transition font-medium text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket text-xs text-accent"></i>
+                        <span>Login</span>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Bottom Theme & RTL Controls -->
+            <div class="pt-3 border-t border-border flex items-center justify-between text-xs text-secondary-text">
+                <span class="font-medium">Preferences</span>
+                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                    <button id="mobile-theme-toggle" class="p-2 rounded-lg border border-border hover:border-accent hover:bg-hover text-primary hover:text-accent transition" title="Toggle Theme" aria-label="Toggle Theme">
+                        <svg class="w-4 h-4 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg class="w-4 h-4 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    <button id="mobile-lang-icon" class="p-2 rounded-lg border border-border hover:border-accent hover:bg-hover text-primary hover:text-accent transition" title="RTL/LTR" aria-label="Toggle RTL/LTR">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="pt-24">
+        <!-- Hero Section -->
+        <section class="py-16 md:py-24 bg-gradient-to-b from-hover/50 to-background border-b border-border">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-hover text-accent border border-border mb-5">
+                            <i class="fa-solid fa-stethoscope"></i> Board-Certified Clinical Dermatology
+                        </span>
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-primary-text leading-tight mb-6">
+                            Evidence-Based Diagnosis & Advanced Clinical Skin Care
+                        </h1>
+                        <p class="text-base sm:text-lg text-secondary-text leading-relaxed mb-8">
+                            We provide comprehensive diagnosis, dermoscopy, surgical excision, and personalized medical management for acute and chronic skin disorders. Every protocol is backed by peer-reviewed dermatology clinical standards.
+                        </p>
+                        <div class="flex flex-wrap gap-4 items-center">
+                            <a href="book-appointment.html?type=medical" class="btn-primary px-6 py-3.5 rounded-xl font-semibold text-sm inline-flex items-center gap-2 shadow-md">
+                                <i class="fa-solid fa-calendar-check"></i> Schedule Medical Exam
+                            </a>
+                            <a href="#conditions" class="btn-accent px-6 py-3.5 rounded-xl font-semibold text-sm inline-flex items-center gap-2">
+                                <i class="fa-solid fa-microscope"></i> View Conditions Treated
+                            </a>
+                        </div>
+                        <div class="grid grid-cols-3 gap-6 pt-8 mt-8 border-t border-border">
+                            <div>
+                                <p class="text-2xl font-bold text-accent">15,000+</p>
+                                <p class="text-xs text-secondary-text">Biopsies Evaluated</p>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-accent">99.4%</p>
+                                <p class="text-xs text-secondary-text">Diagnostic Accuracy</p>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-accent">Same-Day</p>
+                                <p class="text-xs text-secondary-text">Urgent Care Slots</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-border">
+                            <img src="assets/a1.jpg" alt="Dermatologist examining skin condition" class="w-full h-[400px] lg:h-[480px] object-cover object-top">
+                        </div>
+                        <div class="absolute -bottom-6 -left-6 bg-card-bg rounded-2xl shadow-xl border border-border p-4 flex items-center gap-3.5 max-w-xs">
+                            <div class="w-12 h-12 rounded-xl bg-primary text-white flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-shield-halved text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-primary-text">FAAD Certified</h4>
+                                <p class="text-xs text-secondary-text">Fellows of the American Academy of Dermatology</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conditions Grid Section -->
+        <section id="conditions" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs uppercase tracking-widest font-bold text-accent">Clinical Conditions</span>
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-primary-text mt-2 mb-4">Medical Dermatology Specializations</h2>
+                <p class="text-secondary-text text-base">From stubborn acne and complex autoimmune dermatoses to full-body skin cancer screenings, our dermatologists formulate precise therapeutic plans.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Condition 1 -->
+                <div class="bg-card-bg border border-border rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                    <div class="relative h-48 overflow-hidden bg-slate-100">
+                        <img src="assets/t1.jpg" alt="Acne Vulgaris and Cystic Acne Clinical Evaluation" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                        <span class="absolute top-3 left-3 bg-card-bg/90 backdrop-blur px-2.5 py-1 rounded-md text-[11px] font-bold text-accent shadow-sm border border-border flex items-center gap-1.5"><i class="fa-solid fa-droplet"></i> Acne Specialist</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-primary-text mb-2">Acne Vulgaris & Cystic Acne</h3>
+                    <p class="text-sm text-secondary-text leading-relaxed mb-4 flex-grow">
+                        Multimodal protocols targeting sebum overproduction, *C. acnes* colonization, and follicular hyperkeratinization. Treatments include medical retinoids, hormonal modulators, and managed isotretinoin courses.
+                    </p>
+                    <div class="pt-4 border-t border-border flex items-center justify-between text-xs">
+                        <span class="text-accent font-semibold">Treatments: Retinoids, Spironolactone, Isotretinoin</span>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Condition 2 -->
+                <div class="bg-card-bg border border-border rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                    <div class="relative h-48 overflow-hidden bg-slate-100">
+                        <img src="assets/c1.jpg" alt="Rosacea and Facial Erythema Management" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                        <span class="absolute top-3 left-3 bg-card-bg/90 backdrop-blur px-2.5 py-1 rounded-md text-[11px] font-bold text-accent shadow-sm border border-border flex items-center gap-1.5"><i class="fa-solid fa-circle-radiation"></i> Vascular Redness</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-primary-text mb-2">Rosacea & Facial Erythema</h3>
+                    <p class="text-sm text-secondary-text leading-relaxed mb-4 flex-grow">
+                        Specialized care for erythematotelangiectatic, papulopustular, and ocular rosacea. Utilizing pulsed-dye vascular lasers, topical ivermectin, oxymetazoline, and barrier recovery regimens.
+                    </p>
+                    <div class="pt-4 border-t border-border flex items-center justify-between text-xs">
+                        <span class="text-accent font-semibold">Treatments: Pulsed Dye Laser, Topical Ivermectin</span>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Condition 3 -->
+                <div class="bg-card-bg border border-border rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                    <div class="relative h-48 overflow-hidden bg-slate-100">
+                        <img src="assets/a2.jpg" alt="Eczema and Atopic Dermatitis Protocol" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                        <span class="absolute top-3 left-3 bg-card-bg/90 backdrop-blur px-2.5 py-1 rounded-md text-[11px] font-bold text-accent shadow-sm border border-border flex items-center gap-1.5"><i class="fa-solid fa-hand-dots"></i> Chronic Pruritus</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-primary-text mb-2">Eczema & Atopic Dermatitis</h3>
+                    <p class="text-sm text-secondary-text leading-relaxed mb-4 flex-grow">
+                        Evidence-based management for severe chronic pruritus and barrier dysfunction. Advanced biologics (Dupilumab/Tralokinumab), JAK inhibitors, non-steroidal topicals, and wet-wrap protocols.
+                    </p>
+                    <div class="pt-4 border-t border-border flex items-center justify-between text-xs">
+                        <span class="text-accent font-semibold">Treatments: Biologics, JAK Inhibitors, Barrier Repair</span>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Condition 4 -->
+                <div class="bg-card-bg border border-border rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                    <div class="relative h-48 overflow-hidden bg-slate-100">
+                        <img src="assets/dd.jpg" alt="Psoriasis Biologic and Phototherapy Care" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                        <span class="absolute top-3 left-3 bg-card-bg/90 backdrop-blur px-2.5 py-1 rounded-md text-[11px] font-bold text-accent shadow-sm border border-border flex items-center gap-1.5"><i class="fa-solid fa-shield-virus"></i> Autoimmune Derm</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-primary-text mb-2">Psoriasis & Plaque Disorders</h3>
+                    <p class="text-sm text-secondary-text leading-relaxed mb-4 flex-grow">
+                        Comprehensive therapy for plaque, guttate, and inverse psoriasis. Including targeted IL-17/IL-23 inhibitor biologics, systemic immunosuppressants, and Narrowband UVB phototherapy.
+                    </p>
+                    <div class="pt-4 border-t border-border flex items-center justify-between text-xs">
+                        <span class="text-accent font-semibold">Treatments: IL-17/23 Biologics, Narrowband UVB</span>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Condition 5 -->
+                <div class="bg-card-bg border border-border rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                    <div class="relative h-48 overflow-hidden bg-slate-100">
+                        <img src="assets/b1.jpg" alt="Dermoscopic Skin Cancer and Mole Check" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                        <span class="absolute top-3 left-3 bg-card-bg/90 backdrop-blur px-2.5 py-1 rounded-md text-[11px] font-bold text-accent shadow-sm border border-border flex items-center gap-1.5"><i class="fa-solid fa-magnifying-glass-chart"></i> Cancer Screening</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-primary-text mb-2">Skin Cancer Screening & Mole Mapping</h3>
+                    <p class="text-sm text-secondary-text leading-relaxed mb-4 flex-grow">
+                        High-magnification polarized dermoscopy, digital surveillance of atypical dysplastic nevi, early detection of Melanoma, Basal Cell Carcinoma (BCC), and Squamous Cell Carcinoma (SCC).
+                    </p>
+                    <div class="pt-4 border-t border-border flex items-center justify-between text-xs">
+                        <span class="text-accent font-semibold">Procedures: Digital Mole Mapping, Shave/Punch Biopsy</span>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Condition 6 -->
+                <div class="bg-card-bg border border-border rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                    <div class="relative h-48 overflow-hidden bg-slate-100">
+                        <img src="assets/c2.jpg" alt="Trichoscopy Alopecia and Hair Loss Treatment" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                        <span class="absolute top-3 left-3 bg-card-bg/90 backdrop-blur px-2.5 py-1 rounded-md text-[11px] font-bold text-accent shadow-sm border border-border flex items-center gap-1.5"><i class="fa-solid fa-head-side-virus"></i> Scalp & Hair</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-primary-text mb-2">Alopecia & Scalp Disorders</h3>
+                    <p class="text-sm text-secondary-text leading-relaxed mb-4 flex-grow">
+                        Comprehensive trichoscopy and scalp biopsy for androgenetic alopecia, alopecia areata, telogen effluvium, and scarring alopecias. Systemic JAK inhibitors and autologous growth factor injections.
+                    </p>
+                    <div class="pt-4 border-t border-border flex items-center justify-between text-xs">
+                        <span class="text-accent font-semibold">Treatments: Trichoscopy, Intralesional Injections, PRP</span>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Clinical Procedures & Lab Section -->
+        <section class="py-16 bg-hover/40 border-y border-border">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="text-xs uppercase tracking-widest font-bold text-accent">In-Clinic Diagnostics</span>
+                        <h2 class="text-3xl font-serif font-bold text-primary-text mt-2 mb-6">Advanced Diagnostic Equipment & Lab Capabilities</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4 p-4 rounded-xl bg-card-bg border border-border">
+                                <div class="w-10 h-10 rounded-lg bg-primary text-white flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-microscope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-primary-text text-sm">Same-Day Histopathology & Biopsy</h4>
+                                    <p class="text-xs text-secondary-text mt-1 leading-relaxed">In-house laboratory partnership for rapid microscopic examination of atypical cells, infectious pathogens, and autoimmune rashes.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4 p-4 rounded-xl bg-card-bg border border-border">
+                                <div class="w-10 h-10 rounded-lg bg-primary text-white flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-camera"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-primary-text text-sm">Polarized Digital Dermoscopy</h4>
+                                    <p class="text-xs text-secondary-text mt-1 leading-relaxed">High-resolution subsurface pigmentation visualization allowing precise non-invasive distinction between benign nevi and malignant lesions.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4 p-4 rounded-xl bg-card-bg border border-border">
+                                <div class="w-10 h-10 rounded-lg bg-primary text-white flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-sun"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-primary-text text-sm">Medical Narrowband UVB Booths</h4>
+                                    <p class="text-xs text-secondary-text mt-1 leading-relaxed">Calibrated wavelength therapeutic phototherapy for vitiligo, severe eczema, and generalized plaque psoriasis with minimal erythema risk.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <img src="assets/t3.jpg" alt="Clinical treatment suite" class="rounded-3xl shadow-xl border border-border w-full h-[400px] object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-3xl flex items-end p-8">
+                            <div class="text-white">
+                                <p class="text-xs uppercase tracking-wider font-semibold text-accent">Facility Spotlight</p>
+                                <h3 class="text-xl font-bold mt-1">Sterile Minor Procedure Surgical Suites</h3>
+                                <p class="text-xs text-slate-200 mt-1">Equipped for outpatient dermatologic surgery, cyst excisions, and electrodessication.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Clinical Process Timeline -->
+        <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs uppercase tracking-widest font-bold text-accent">Patient Pathway</span>
+                <h2 class="text-3xl font-serif font-bold text-primary-text mt-2 mb-4">What to Expect During Your Medical Visit</h2>
+                <p class="text-secondary-text text-sm">A thorough, unhurried consultation focused on diagnostic clarity and measurable improvement.</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="p-6 rounded-2xl bg-card-bg border border-border text-center">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 text-accent font-bold text-lg flex items-center justify-center mx-auto mb-4">1</div>
+                    <h3 class="font-bold text-primary-text mb-2 text-base">Clinical History</h3>
+                    <p class="text-xs text-secondary-text leading-relaxed">Deep-dive into symptom timelines, previous medication responses, family genetics, and lifestyle triggers.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-card-bg border border-border text-center">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 text-accent font-bold text-lg flex items-center justify-center mx-auto mb-4">2</div>
+                    <h3 class="font-bold text-primary-text mb-2 text-base">Full Exam & Dermoscopy</h3>
+                    <p class="text-xs text-secondary-text leading-relaxed">Detailed visual and dermoscopic inspection of all affected anatomical sites with magnification.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-card-bg border border-border text-center">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 text-accent font-bold text-lg flex items-center justify-center mx-auto mb-4">3</div>
+                    <h3 class="font-bold text-primary-text mb-2 text-base">Biopsy / Diagnostics</h3>
+                    <p class="text-xs text-secondary-text leading-relaxed">Same-day minor punch or shave biopsy under local anesthetic if histological verification is required.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-card-bg border border-border text-center">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 text-accent font-bold text-lg flex items-center justify-center mx-auto mb-4">4</div>
+                    <h3 class="font-bold text-primary-text mb-2 text-base">Prescription & Care</h3>
+                    <p class="text-xs text-secondary-text leading-relaxed">Personalized topical, systemic, or biologic regimen with digital follow-up through our patient portal.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Banner -->
+        <section class="py-16 bg-gradient-to-r from-teal-800 to-teal-950 text-white">
+            <div class="max-w-5xl mx-auto px-4 text-center">
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-white/20 text-white mb-4">Urgent & Routine Clinical Appointments</span>
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold mb-4">Consult a Board-Certified Dermatologist</h2>
+                <p class="text-sm sm:text-base text-slate-200 max-w-2xl mx-auto mb-8">Early diagnosis prevents scarring, complications, and chronic flare-ups. Book your comprehensive medical exam with our specialist team today.</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="book-appointment.html?type=medical" class="bg-white text-teal-900 font-bold px-8 py-3.5 rounded-xl hover:bg-slate-100 transition shadow-lg">
+                        <i class="fa-solid fa-calendar-check mr-2"></i> Book Medical Exam
+                    </a>
+                    <a href="doctors.html" class="border-2 border-white text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-white/10 transition">
+                        Meet Our Dermatologists
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer" class="pt-14 transition-colors duration-300" style="background-color: var(--color-footer-bg);">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8 pb-10 border-b border-slate-700">
+                <div class="col-span-2 md:col-span-2">
+                    <h3 class="text-2xl sm:text-3xl font-serif font-semibold mb-4 text-accent"><a href="index.html" class="hover:opacity-80 transition inline-flex items-center"><i class="fa-solid fa-spa mr-2"></i>Skin Clinic</a></h3>
+                    <p class="text-sm leading-relaxed max-w-xs text-white">Refined clinical dermatology and aesthetic excellence. Our board-certified specialists provide personalized medical, surgical, and cosmetic skin care solutions with state-of-the-art technology.</p>
+                    <div class="flex space-x-4 rtl:space-x-reverse mt-6">
+                        <a href="#" class="text-slate-300 hover:text-accent transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-slate-300 hover:text-accent transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-slate-300 hover:text-accent transition"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-medium mb-4 text-accent">Clinical Care</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="medical-dermatology.html" class="text-slate-300 hover:text-accent transition">Medical Dermatology</a></li>
+                        <li><a href="cosmetic-treatments.html" class="text-slate-300 hover:text-accent transition">Cosmetic Aesthetics</a></li>
+                        <li><a href="doctor-profiles.html" class="text-slate-300 hover:text-accent transition">Doctor Credentials</a></li>
+                        <li><a href="patient-results.html" class="text-slate-300 hover:text-accent transition">Before & After</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-medium mb-4 text-accent">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html" class="text-slate-300 hover:text-accent transition">Home</a></li>
+                        <li><a href="book-appointment.html" class="text-slate-300 hover:text-accent transition">Book Consultation</a></li>
+                        <li><a href="skincare-products.html" class="text-slate-300 hover:text-accent transition">Skincare Products</a></li>
+                        <li><a href="contact.html" class="text-slate-300 hover:text-accent transition">Contact & Location</a></li>
+                    </ul>
+                </div>
+                <div class="col-span-2 md:col-span-4 lg:col-span-1">
+                    <h4 class="text-lg font-medium mb-4 text-accent">Newsletter</h4>
+                    <p class="text-sm mb-4 text-white">Get monthly clinical skincare updates from our doctors.</p>
+                    <input type="email" placeholder="Your email" class="p-3 text-sm rounded-lg w-full bg-slate-800 border border-slate-700 text-white outline-none">
+                    <button class="btn-accent font-semibold py-3 rounded-lg w-full mt-3">Subscribe</button>
+                </div>
+            </div>
+            <div class="py-4 text-center text-xs text-white">&copy; 2026 <a href="index.html" class="hover:text-accent transition underline-offset-2 hover:underline">Dermatology & Skin Clinic</a>. All rights reserved. | <span class="hover:text-accent cursor-pointer">Privacy</span> | <span class="hover:text-accent cursor-pointer">Terms</span></div>
+        </div>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const html = document.documentElement;
+            // Dropdowns
+            document.querySelectorAll(".dropdown-wrapper").forEach(dropdown => {
+                const btn = dropdown.querySelector(".dropdown-toggle");
+                dropdown.addEventListener("mouseenter", () => { if (window.innerWidth > 1280) dropdown.classList.add("open"); });
+                dropdown.addEventListener("mouseleave", () => { if (window.innerWidth > 1280) dropdown.classList.remove("open"); });
+                if (btn && window.innerWidth <= 1280) btn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); dropdown.classList.toggle("open"); });
+            });
+            document.addEventListener("click", e => { document.querySelectorAll(".dropdown-wrapper").forEach(d => { if (!d.contains(e.target)) d.classList.remove("open"); }); });
+
+            // Theme toggle
+            const themeToggle = document.getElementById('theme-toggle'), mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+            const applyTheme = (theme) => { html.setAttribute('data-theme', theme); document.querySelectorAll('.light-icon').forEach(i => i.classList.toggle('hidden', theme === 'dark')); document.querySelectorAll('.dark-icon').forEach(i => i.classList.toggle('hidden', theme === 'light')); localStorage.setItem('theme', theme); };
+            const initTheme = () => { const stored = localStorage.getItem('theme'); const pref = window.matchMedia('(prefers-color-scheme: dark)').matches; applyTheme(stored === 'dark' || (!stored && pref) ? 'dark' : 'light'); };
+            const toggleTheme = () => { const cur = html.getAttribute('data-theme'); applyTheme(cur === 'light' ? 'dark' : 'light'); };
+            themeToggle?.addEventListener('click', toggleTheme); mobileThemeToggle?.addEventListener('click', toggleTheme); initTheme();
+
+            // Language RTL
+            const langBtn = document.getElementById('lang-icon'), mobileLang = document.getElementById('mobile-lang-icon');
+            const toggleLang = () => { const isRTL = html.getAttribute('dir') === 'rtl'; html.setAttribute('dir', isRTL ? 'ltr' : 'rtl'); localStorage.setItem('language', isRTL ? 'en' : 'ar'); };
+            langBtn?.addEventListener('click', toggleLang); mobileLang?.addEventListener('click', toggleLang);
+            const savedDir = localStorage.getItem('language') === 'ar' ? 'rtl' : 'ltr'; html.setAttribute('dir', savedDir);
+
+            
+        // Mobile Accordion Dropdown Helper
+        window.toggleMobileAccordion = function(menuId, btn) {
+            const menu = document.getElementById(menuId);
+            if (!menu) return;
+            const isOpen = !menu.classList.contains('hidden');
+            // Close other accordion menus inside drawer
+            document.querySelectorAll('#drawer-content [id^="mobile-"][id$="-menu"]').forEach(m => {
+                m.classList.add('hidden');
+            });
+            document.querySelectorAll('.mobile-accordion-btn svg').forEach(svg => {
+                svg.classList.remove('rotate-180');
+            });
+            // If it was closed, open it now
+            if (!isOpen) {
+                menu.classList.remove('hidden');
+                const svg = btn ? btn.querySelector('svg') : null;
+                if (svg) svg.classList.add('rotate-180');
+            }
+        };
+
+            // Drawer
+            const drawer = document.getElementById('mobile-menu-drawer'), backdrop = document.getElementById('drawer-backdrop'), content = document.getElementById('drawer-content'), openBtn = document.getElementById('mobile-menu-open'), closeBtn = document.getElementById('mobile-menu-close');
+            const openDrawer = () => { drawer.classList.remove('pointer-events-none'); content.classList.remove('translate-y-[-100%]'); backdrop.classList.add('opacity-50', 'pointer-events-auto'); document.body.style.overflow = 'hidden'; };
+            const closeDrawer = () => { content.classList.add('translate-y-[-100%]'); backdrop.classList.remove('opacity-50', 'pointer-events-auto'); content.addEventListener('transitionend', () => { drawer.classList.add('pointer-events-none'); document.body.style.overflow = ''; }, { once: true }); };
+            openBtn?.addEventListener('click', openDrawer); closeBtn?.addEventListener('click', closeDrawer); backdrop?.addEventListener('click', closeDrawer);
+        });
+    </script>
+</body>
+</html>

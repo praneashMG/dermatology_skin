@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/fav.png" type="image/jpeg">
+    <title>Book an Appointment · Schedule Consultation | Skin Clinic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root, html[data-theme='light'] {
+            --color-background: #FFFFFF;
+            --color-primary-text: #0F172A;
+            --color-secondary-text: #475569;
+            --color-primary: #0F766E;
+            --color-secondary: #0284C7;
+            --color-accent: #0F766E;
+            --color-border: #E2E8F0;
+            --color-hover: #F0FDFA;
+            --color-footer-bg: #042F2E;
+            --color-footer-text: #FFFFFF;
+            --color-card-bg: #FFFFFF;
+        }
+
+        html[data-theme='dark'] {
+            --color-background: #09090B;
+            --color-primary-text: #FFFFFF;
+            --color-secondary-text: #94A3B8;
+            --color-primary: #14B8A6;
+            --color-secondary: #38BDF8;
+            --color-accent: #14B8A6;
+            --color-border: #27272A;
+            --color-hover: #134E4A;
+            --color-footer-bg: #000000;
+            --color-footer-text: #FFFFFF;
+            --color-card-bg: #18181B;
+        }
+
+        html, body {
+            background: var(--color-background);
+            color: var(--color-primary-text);
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .bg-primary { background-color: var(--color-primary); }
+        .bg-accent { background-color: var(--color-accent); }
+        .bg-card-bg { background-color: var(--color-card-bg); }
+        .bg-hover { background-color: var(--color-hover); }
+        .bg-background { background-color: var(--color-background); }
+        .border-border { border-color: var(--color-border); }
+        .text-accent { color: var(--color-accent); }
+        .text-primary { color: var(--color-primary); }
+        .text-secondary-text { color: var(--color-secondary-text); }
+        .text-primary-text { color: var(--color-primary-text); }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: #FFFFFF !important;
+            border: 2px solid var(--color-primary);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: var(--color-secondary);
+            border-color: var(--color-secondary);
+            color: #FFFFFF !important;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(15, 118, 110, 0.4);
+        }
+
+        .btn-accent {
+            background-color: transparent;
+            color: var(--color-accent) !important;
+            border: 2px solid var(--color-accent);
+            transition: all 0.3s ease;
+        }
+        .btn-accent:hover {
+            background-color: var(--color-accent);
+            color: #FFFFFF !important;
+            transform: translateY(-2px);
+        }
+
+        .dropdown-wrapper { position: relative; }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            min-width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px);
+            transition: all 0.2s ease;
+            z-index: 50;
+            padding: 0.5rem 0;
+        }
+        .dropdown-wrapper.open .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: var(--color-primary-text);
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+        }
+        .dropdown-menu a:hover {
+            background-color: var(--color-hover);
+            color: var(--color-accent);
+        }
+        html[dir="rtl"] .dropdown-menu { left: auto; right: 0; }
+
+        .slot-btn.active {
+            background-color: var(--color-primary);
+            color: #FFFFFF;
+            border-color: var(--color-primary);
+        }
+        .service-card.active, .doctor-card.active {
+            border-color: var(--color-primary);
+            background-color: var(--color-hover);
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+    <!-- Header -->
+            <!-- Navigation Bar -->
+    <header class="fixed top-3 left-0 w-full z-50 px-3 sm:px-6" id="main-header">
+        <nav class="mx-auto max-w-[1400px] px-4 sm:px-6 py-2.5 flex items-center justify-between rounded-2xl shadow-lg border border-border bg-card-bg/95 backdrop-blur-md"
+            style="background-color: var(--color-card-bg);">
+            <!-- Clinic Logo & Brand -->
+            <a href="index.html" class="flex items-center gap-2 text-xl sm:text-2xl font-serif font-bold text-accent shrink-0 tracking-tight transition hover:opacity-90">
+                <i class="fa-solid fa-spa text-primary text-xl sm:text-2xl"></i>
+                <span class="whitespace-nowrap">Skin Clinic</span>
+            </a>
+
+            <!-- Desktop Navigation Links (Centered, Single-Line, Clean Whitespace) -->
+            <div class="hidden xl:flex items-center justify-center flex-1 px-4 lg:px-6">
+                <div class="flex items-center space-x-5 lg:space-x-7 rtl:space-x-reverse font-medium text-sm whitespace-nowrap">
+                    <!-- Home Dropdown -->
+                    <div class="dropdown-wrapper">
+                        <button class="nav-link flex items-center gap-1.5 py-1.5 text-primary-text hover:text-accent transition">
+                            <span>Home</span>
+                            <svg class="w-3.5 h-3.5 transition-transform opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="index.html">Home 1 (Clinical Chic)</a>
+                            <a href="home2.html">Home 2 (Modern Aesthetics)</a>
+                        </div>
+                    </div>
+
+                    <!-- Treatments Dropdown -->
+                    <div class="dropdown-wrapper">
+                        <button class="nav-link flex items-center gap-1.5 py-1.5 text-primary-text hover:text-accent transition">
+                            <span>Treatments</span>
+                            <svg class="w-3.5 h-3.5 transition-transform opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="medical-dermatology.html">Medical Dermatology</a>
+                            <a href="cosmetic-treatments.html">Cosmetic & Aesthetics</a>
+                            <a href="treatments.html">All Treatments Overview</a>
+                        </div>
+                    </div>
+
+                    <!-- Doctors Dropdown -->
+                    <div class="dropdown-wrapper">
+                        <button class="nav-link flex items-center gap-1.5 py-1.5 text-primary-text hover:text-accent transition">
+                            <span>Doctors</span>
+                            <svg class="w-3.5 h-3.5 transition-transform opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="doctors.html">Our Medical Team</a>
+                            <a href="doctor-profiles.html">Doctor Profiles & Credentials</a>
+                        </div>
+                    </div>
+
+                    <!-- Results & Reviews -->
+                    <a href="patient-results.html" class="nav-link py-1.5 text-primary-text hover:text-accent transition">Results & Reviews</a>
+
+                    <!-- Shop & Blog -->
+                    <a href="skincare-products.html" class="nav-link py-1.5 text-primary-text hover:text-accent transition">Shop & Blog</a>
+
+                    <!-- About -->
+                    <a href="about.html" class="nav-link py-1.5 text-primary-text hover:text-accent transition">About</a>
+
+                    <!-- Contact -->
+                    <a href="contact.html" class="nav-link py-1.5 text-primary-text hover:text-accent transition">Contact</a>
+
+                    <!-- Portals Dropdown -->
+                    <div class="dropdown-wrapper">
+                        <button class="nav-link flex items-center gap-1.5 py-1.5 text-primary-text hover:text-accent transition">
+                            <span>Portal</span>
+                            <svg class="w-3.5 h-3.5 transition-transform opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="patient-dashboard.html">Patient Portal</a>
+                            <a href="appointment.html">Admin Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Actions (Theme, Direction, Primary Book CTA, Login) -->
+            <div class="hidden xl:flex items-center space-x-2.5 rtl:space-x-reverse shrink-0">
+                <button id="theme-toggle" class="icon-btn text-primary hover:text-accent p-2 rounded-lg border border-border hover:border-accent hover:bg-hover transition duration-200" title="Toggle Theme" aria-label="Toggle Dark/Light Mode">
+                    <svg class="w-4 h-4 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <svg class="w-4 h-4 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+                <button id="lang-icon" class="text-primary hover:text-accent p-2 rounded-lg border border-border hover:border-accent hover:bg-hover transition duration-200" title="RTL/LTR" aria-label="Toggle Direction">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                </button>
+                <a href="book-appointment.html" class="btn-primary px-4 py-2 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 whitespace-nowrap shadow-sm hover:shadow-md transition-all">
+                    <i class="fa-solid fa-calendar-check text-xs"></i>
+                    <span>Book Appointment</span>
+                </a>
+                <a href="login.html" class="px-3.5 py-2 rounded-xl text-sm font-medium border border-border hover:border-accent hover:bg-hover text-primary-text hover:text-accent transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-right-to-bracket text-xs text-accent"></i>
+                    <span>Login</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Open Button -->
+            <div class="flex items-center xl:hidden">
+                <button id="mobile-menu-open" class="icon-btn text-primary hover:text-accent p-2 rounded-lg border border-border hover:bg-hover" aria-label="Open Mobile Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Drawer -->
+        <!-- Mobile Drawer Menu -->
+    <div id="mobile-menu-drawer" class="fixed inset-0 z-50 pointer-events-none transition-all duration-300">
+        <div id="drawer-backdrop" class="absolute inset-0 bg-black/60 opacity-0 transition-opacity duration-300 pointer-events-none backdrop-blur-sm"></div>
+        <div id="drawer-content" class="absolute top-0 left-0 right-0 bg-card-bg rounded-b-3xl shadow-2xl p-5 sm:p-6 xl:hidden max-h-[90vh] overflow-y-auto transform translate-y-[-100%] transition-transform duration-300 ease-out border-b border-border" style="background-color: var(--color-card-bg);">
+            <!-- Header Row -->
+            <div class="flex justify-between items-center pb-4 border-b border-border">
+                <a href="index.html" class="flex items-center gap-2 text-xl font-serif font-bold text-accent">
+                    <i class="fa-solid fa-spa text-primary"></i>
+                    <span>Skin Clinic</span>
+                </a>
+                <button id="mobile-menu-close" class="text-primary hover:text-accent p-2 rounded-xl border border-border hover:bg-hover transition" aria-label="Close Mobile Menu">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- Navigation Items with Neat Dropdowns / Accordions -->
+            <nav class="flex flex-col space-y-1 py-3 text-sm">
+                <!-- Home Accordion -->
+                <div class="border-b border-border/40 pb-1">
+                    <button type="button" class="mobile-accordion-btn flex items-center justify-between w-full py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition text-left" onclick="toggleMobileAccordion('mobile-home-menu', this)">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-house text-sm text-accent w-4 text-center"></i>
+                            <span>Home</span>
+                        </span>
+                        <svg class="w-4 h-4 transition-transform duration-200 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-home-menu" class="hidden pl-8 pr-2 py-1.5 space-y-1 border-l-2 border-accent/40 ml-4 my-1">
+                        <a href="index.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Home 1 (Clinical Chic)</a>
+                        <a href="home2.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Home 2 (Modern Aesthetics)</a>
+                    </div>
+                </div>
+
+                <!-- Treatments Accordion -->
+                <div class="border-b border-border/40 pb-1">
+                    <button type="button" class="mobile-accordion-btn flex items-center justify-between w-full py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition text-left" onclick="toggleMobileAccordion('mobile-treat-menu', this)">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-wand-magic-sparkles text-sm text-accent w-4 text-center"></i>
+                            <span>Treatments</span>
+                        </span>
+                        <svg class="w-4 h-4 transition-transform duration-200 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-treat-menu" class="hidden pl-8 pr-2 py-1.5 space-y-1 border-l-2 border-accent/40 ml-4 my-1">
+                        <a href="medical-dermatology.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Medical Dermatology</a>
+                        <a href="cosmetic-treatments.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Cosmetic & Aesthetics</a>
+                        <a href="treatments.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">All Treatments Overview</a>
+                    </div>
+                </div>
+
+                <!-- Doctors Accordion -->
+                <div class="border-b border-border/40 pb-1">
+                    <button type="button" class="mobile-accordion-btn flex items-center justify-between w-full py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition text-left" onclick="toggleMobileAccordion('mobile-doc-menu', this)">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-user-doctor text-sm text-accent w-4 text-center"></i>
+                            <span>Doctors</span>
+                        </span>
+                        <svg class="w-4 h-4 transition-transform duration-200 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-doc-menu" class="hidden pl-8 pr-2 py-1.5 space-y-1 border-l-2 border-accent/40 ml-4 my-1">
+                        <a href="doctors.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Our Medical Team</a>
+                        <a href="doctor-profiles.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Doctor Profiles & Credentials</a>
+                    </div>
+                </div>
+
+                <!-- Standard Links -->
+                <a href="patient-results.html" class="flex items-center gap-2.5 py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition">
+                    <i class="fa-solid fa-images text-sm text-accent w-4 text-center"></i>
+                    <span>Results & Reviews</span>
+                </a>
+                <a href="skincare-products.html" class="flex items-center gap-2.5 py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition">
+                    <i class="fa-solid fa-pump-medical text-sm text-accent w-4 text-center"></i>
+                    <span>Shop & Skincare Blog</span>
+                </a>
+                <a href="about.html" class="flex items-center gap-2.5 py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition">
+                    <i class="fa-solid fa-circle-info text-sm text-accent w-4 text-center"></i>
+                    <span>About Us</span>
+                </a>
+                <a href="contact.html" class="flex items-center gap-2.5 py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition">
+                    <i class="fa-solid fa-location-dot text-sm text-accent w-4 text-center"></i>
+                    <span>Contact & Location</span>
+                </a>
+
+                <!-- Portal Accordion -->
+                <div class="border-t border-border/40 pt-1">
+                    <button type="button" class="mobile-accordion-btn flex items-center justify-between w-full py-2.5 px-3 rounded-xl font-semibold text-primary-text hover:bg-hover hover:text-accent transition text-left" onclick="toggleMobileAccordion('mobile-portal-menu', this)">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-hospital-user text-sm text-accent w-4 text-center"></i>
+                            <span>Portal & Management</span>
+                        </span>
+                        <svg class="w-4 h-4 transition-transform duration-200 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-portal-menu" class="hidden pl-8 pr-2 py-1.5 space-y-1 border-l-2 border-accent/40 ml-4 my-1">
+                        <a href="patient-dashboard.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Patient Portal</a>
+                        <a href="appointment.html" class="block py-1.5 px-2 rounded-lg text-sm text-secondary-text hover:text-accent hover:bg-hover font-medium transition">Admin Dashboard</a>
+                    </div>
+                </div>
+
+                <!-- Action CTA Buttons -->
+                <div class="pt-4 mt-2 border-t border-border flex flex-col sm:flex-row gap-2.5">
+                    <a href="book-appointment.html" class="btn-primary flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition">
+                        <i class="fa-solid fa-calendar-check text-xs"></i>
+                        <span>Book Appointment</span>
+                    </a>
+                    <a href="login.html" class="flex-1 py-2.5 rounded-xl border border-border hover:border-accent hover:bg-hover text-primary-text hover:text-accent transition font-medium text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket text-xs text-accent"></i>
+                        <span>Login</span>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Bottom Theme & RTL Controls -->
+            <div class="pt-3 border-t border-border flex items-center justify-between text-xs text-secondary-text">
+                <span class="font-medium">Preferences</span>
+                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                    <button id="mobile-theme-toggle" class="p-2 rounded-lg border border-border hover:border-accent hover:bg-hover text-primary hover:text-accent transition" title="Toggle Theme" aria-label="Toggle Theme">
+                        <svg class="w-4 h-4 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg class="w-4 h-4 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    <button id="mobile-lang-icon" class="p-2 rounded-lg border border-border hover:border-accent hover:bg-hover text-primary hover:text-accent transition" title="RTL/LTR" aria-label="Toggle RTL/LTR">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="pt-24 pb-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header Banner -->
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-hover text-accent border border-border mb-3">
+                    <i class="fa-solid fa-calendar-check"></i> Online Scheduling Portal
+                </span>
+                <h1 class="text-3xl sm:text-4xl font-serif font-bold text-primary-text mb-3">
+                    Book Your Dermatology Consultation
+                </h1>
+                <p class="text-sm sm:text-base text-secondary-text">
+                    Select your clinical discipline, preferred doctor, date, and appointment slot. Receive immediate digital confirmation with calendar syncing.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                <!-- Interactive Booking Form (8 cols) -->
+                <div class="lg:col-span-8 bg-card-bg border border-border rounded-3xl p-6 sm:p-10 shadow-lg space-y-10">
+                                        <!-- Consultation Mode Selector -->
+                    <div class="bg-hover p-4 sm:p-5 rounded-2xl border border-border">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-accent mb-3">Consultation Type & Delivery Mode</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="mode-selector">
+                            <button type="button" id="mode-inclinic" onclick="setConsultMode('inclinic')" class="flex items-center gap-3 p-3.5 rounded-xl border-2 border-accent bg-background text-primary-text font-semibold text-sm transition-all shadow-sm">
+                                <div class="w-10 h-10 rounded-lg bg-primary text-white flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-hospital-user text-base"></i>
+                                </div>
+                                <div class="text-left rtl:text-right">
+                                    <div class="font-bold text-primary-text">In-Clinic Visit</div>
+                                    <div class="text-[11px] text-secondary-text font-normal">742 Evergreen Medical Suites</div>
+                                </div>
+                            </button>
+                            <button type="button" id="mode-virtual" onclick="setConsultMode('virtual')" class="flex items-center gap-3 p-3.5 rounded-xl border border-border bg-background text-secondary-text font-medium text-sm hover:border-accent transition-all">
+                                <div class="w-10 h-10 rounded-lg bg-accent/10 text-accent flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-video text-base"></i>
+                                </div>
+                                <div class="text-left rtl:text-right">
+                                    <div class="font-bold text-primary-text">Virtual Tele-Dermatology</div>
+                                    <div class="text-[11px] text-secondary-text font-normal">Encrypted Video + Digital Rx</div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 1: Service Type -->
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-full bg-primary text-white font-bold flex items-center justify-center text-sm">1</span>
+                            <h2 class="text-xl font-bold text-primary-text">Select Visit Purpose / Clinical Service</h2>
+                        </div>
+                        <div class="grid sm:grid-cols-2 gap-3" id="service-options">
+                            <div class="service-card active cursor-pointer border border-border rounded-xl p-4 transition-all" onclick="selectService(this, 'Comprehensive Medical Dermatology', '$180')">
+                                <div class="flex items-start justify-between">
+                                    <div class="font-bold text-sm text-primary-text">Medical Dermatology</div>
+                                    <span class="text-xs font-semibold text-accent">$180 / Insured</span>
+                                </div>
+                                <p class="text-xs text-secondary-text mt-1">Acne, eczema, psoriasis, rashes, mole check, prescription therapy.</p>
+                            </div>
+                            <div class="service-card cursor-pointer border border-border rounded-xl p-4 transition-all" onclick="selectService(this, 'Aesthetic & Cosmetic Blueprint', '$150')">
+                                <div class="flex items-start justify-between">
+                                    <div class="font-bold text-sm text-primary-text">Cosmetic Consultation</div>
+                                    <span class="text-xs font-semibold text-accent">$150 (Applied to Care)</span>
+                                </div>
+                                <p class="text-xs text-secondary-text mt-1">Botox, dermal fillers, CO2 & PicoSure lasers, Morpheus8 RF.</p>
+                            </div>
+                            <div class="service-card cursor-pointer border border-border rounded-xl p-4 transition-all" onclick="selectService(this, 'Full-Body Skin Cancer Screen', '$220')">
+                                <div class="flex items-start justify-between">
+                                    <div class="font-bold text-sm text-primary-text">Full-Body Cancer Screen</div>
+                                    <span class="text-xs font-semibold text-accent">$220 / Insured</span>
+                                </div>
+                                <p class="text-xs text-secondary-text mt-1">Total-body polarized dermoscopy and atypical mole mapping.</p>
+                            </div>
+                            <div class="service-card cursor-pointer border border-border rounded-xl p-4 transition-all" onclick="selectService(this, 'Pediatric Dermatology Exam', '$190')">
+                                <div class="flex items-start justify-between">
+                                    <div class="font-bold text-sm text-primary-text">Pediatric Dermatology</div>
+                                    <span class="text-xs font-semibold text-accent">$190 / Insured</span>
+                                </div>
+                                <p class="text-xs text-secondary-text mt-1">Infant eczema, hemangiomas, birthmarks, childhood dermatitis.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Choose Doctor -->
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-full bg-primary text-white font-bold flex items-center justify-center text-sm">2</span>
+                            <h2 class="text-xl font-bold text-primary-text">Select Preferred Dermatologist</h2>
+                        </div>
+                        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3" id="doctor-options">
+                            <div class="doctor-card active cursor-pointer border border-border rounded-xl p-3 flex items-center gap-3 transition-all" onclick="selectDoctor(this, 'First Available Specialist')">
+                                <div class="w-10 h-10 rounded-full bg-primary/20 text-accent flex items-center justify-center shrink-0 font-bold text-sm">
+                                    <i class="fa-solid fa-user-doctor"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="font-bold text-xs text-primary-text truncate">First Available</p>
+                                    <p class="text-[10px] text-secondary-text">Fastest opening</p>
+                                </div>
+                            </div>
+                            <div class="doctor-card cursor-pointer border border-border rounded-xl p-3 flex items-center gap-3 transition-all" onclick="selectDoctor(this, 'Dr. Ananya Sharma, MD')">
+                                <img src="assets/q1.jpg" alt="Dr. Ananya Sharma" class="w-10 h-10 rounded-full object-cover shrink-0">
+                                <div class="min-w-0">
+                                    <p class="font-bold text-xs text-primary-text truncate">Dr. A. Sharma</p>
+                                    <p class="text-[10px] text-secondary-text">Mohs / Medical</p>
+                                </div>
+                            </div>
+                            <div class="doctor-card cursor-pointer border border-border rounded-xl p-3 flex items-center gap-3 transition-all" onclick="selectDoctor(this, 'Dr. Rohan Mehta, MD')">
+                                <img src="assets/q2.jpg" alt="Dr. Rohan Mehta" class="w-10 h-10 rounded-full object-cover shrink-0">
+                                <div class="min-w-0">
+                                    <p class="font-bold text-xs text-primary-text truncate">Dr. R. Mehta</p>
+                                    <p class="text-[10px] text-secondary-text">Laser / Cosmetic</p>
+                                </div>
+                            </div>
+                            <div class="doctor-card cursor-pointer border border-border rounded-xl p-3 flex items-center gap-3 transition-all" onclick="selectDoctor(this, 'Dr. Kavya Iyer, MD')">
+                                <img src="assets/q3.jpg" alt="Dr. Kavya Iyer" class="w-10 h-10 rounded-full object-cover shrink-0">
+                                <div class="min-w-0">
+                                    <p class="font-bold text-xs text-primary-text truncate">Dr. K. Iyer</p>
+                                    <p class="text-[10px] text-secondary-text">Pediatric / Medical</p>
+                                </div>
+                            </div>
+                            <div class="doctor-card cursor-pointer border border-border rounded-xl p-3 flex items-center gap-3 transition-all" onclick="selectDoctor(this, 'Dr. Arjun Nair, MD')">
+                                <img src="assets/q4.jpg" alt="Dr. Arjun Nair" class="w-10 h-10 rounded-full object-cover shrink-0">
+                                <div class="min-w-0">
+                                    <p class="font-bold text-xs text-primary-text truncate">Dr. A. Nair</p>
+                                    <p class="text-[10px] text-secondary-text">Pathology / Complex</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Date & Time -->
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-full bg-primary text-white font-bold flex items-center justify-center text-sm">3</span>
+                            <h2 class="text-xl font-bold text-primary-text">Select Date & Time Slot</h2>
+                        </div>
+                        <div class="grid sm:grid-cols-3 gap-4 items-start">
+                            <div>
+                                <label class="block text-xs font-semibold text-secondary-text mb-1.5">Choose Date</label>
+                                <input type="date" id="book-date" class="w-full p-2.5 rounded-xl border border-border bg-background text-primary-text text-sm focus:ring-2 focus:ring-accent outline-none" onchange="updateDateDisplay()">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold text-secondary-text mb-1.5">Available Slots</label>
+                                <div class="grid grid-cols-3 gap-2" id="slot-buttons">
+                                    <button type="button" class="slot-btn active p-2 rounded-lg border border-border text-xs font-semibold" onclick="selectSlot(this, '09:00 AM')">09:00 AM</button>
+                                    <button type="button" class="slot-btn p-2 rounded-lg border border-border text-xs font-semibold" onclick="selectSlot(this, '10:15 AM')">10:15 AM</button>
+                                    <button type="button" class="slot-btn p-2 rounded-lg border border-border text-xs font-semibold" onclick="selectSlot(this, '11:30 AM')">11:30 AM</button>
+                                    <button type="button" class="slot-btn p-2 rounded-lg border border-border text-xs font-semibold" onclick="selectSlot(this, '01:45 PM')">01:45 PM</button>
+                                    <button type="button" class="slot-btn p-2 rounded-lg border border-border text-xs font-semibold" onclick="selectSlot(this, '03:15 PM')">03:15 PM</button>
+                                    <button type="button" class="slot-btn p-2 rounded-lg border border-border text-xs font-semibold" onclick="selectSlot(this, '04:30 PM')">04:30 PM</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Patient Info Form -->
+                    <form id="booking-form" onsubmit="handleBooking(event)">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-full bg-primary text-white font-bold flex items-center justify-center text-sm">4</span>
+                            <h2 class="text-xl font-bold text-primary-text">Patient Information & Insurance</h2>
+                        </div>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-secondary-text mb-1">Full Legal Name *</label>
+                                <input type="text" id="patient-name" required placeholder="Sarah Jenkins" class="w-full p-2.5 rounded-xl border border-border bg-background text-primary-text text-sm outline-none focus:ring-2 focus:ring-accent">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-secondary-text mb-1">Date of Birth *</label>
+                                <input type="date" required class="w-full p-2.5 rounded-xl border border-border bg-background text-primary-text text-sm outline-none focus:ring-2 focus:ring-accent">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-secondary-text mb-1">Email Address *</label>
+                                <input type="email" id="patient-email" required placeholder="sarah.jenkins@example.com" class="w-full p-2.5 rounded-xl border border-border bg-background text-primary-text text-sm outline-none focus:ring-2 focus:ring-accent">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-secondary-text mb-1">Phone Number *</label>
+                                <input type="tel" required placeholder="(555) 234-5678" class="w-full p-2.5 rounded-xl border border-border bg-background text-primary-text text-sm outline-none focus:ring-2 focus:ring-accent">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-secondary-text mb-1">Insurance Carrier</label>
+                                <select class="w-full p-2.5 rounded-xl border border-border bg-background text-primary-text text-sm outline-none focus:ring-2 focus:ring-accent">
+                                    <option value="Self-Pay">Self-Pay (Transparent Pricing)</option>
+                                    <option value="BlueCross">BlueCross BlueShield</option>
+                                    <option value="Aetna">Aetna Healthcare</option>
+                                    <option value="Cigna">Cigna PPO</option>
+                                    <option value="UnitedHealthcare">UnitedHealthcare</option>
+                                    <option value="Medicare">Medicare Part B</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-secondary-text mb-1">Primary Symptom or Request</label>
+                                <input type="text" placeholder="e.g. Flare-up on jawline, mole check" class="w-full p-2.5 rounded-xl border border-border bg-background text-primary-text text-sm outline-none focus:ring-2 focus:ring-accent">
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-border flex items-center justify-between">
+                            <span class="text-xs text-secondary-text flex items-center gap-1.5"><i class="fa-solid fa-lock text-accent"></i> 256-bit Encrypted HIPAA Form</span>
+                            <button type="submit" class="btn-primary px-8 py-3.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg flex items-center gap-2">
+                                <i class="fa-solid fa-check"></i> Confirm Appointment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Sticky Summary Sidebar (4 cols) -->
+                <div class="lg:col-span-4 sticky top-24 space-y-6">
+                    <div class="bg-card-bg border border-border rounded-3xl p-6 shadow-md">
+                        <h3 class="text-lg font-bold text-primary-text pb-4 border-b border-border flex items-center gap-2">
+                            <i class="fa-solid fa-file-medical text-accent"></i> Appointment Summary
+                        </h3>
+                        <div class="py-4 space-y-3.5 text-xs">
+                                                        <div class="flex justify-between">
+                                <span class="text-secondary-text">Mode:</span>
+                                <span class="font-bold text-accent text-right" id="summary-mode">In-Clinic Visit</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-secondary-text">Service:</span>
+                                <span class="font-bold text-primary-text text-right" id="summary-service">Comprehensive Medical</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-secondary-text">Physician:</span>
+                                <span class="font-bold text-primary-text text-right" id="summary-doctor">First Available Specialist</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-secondary-text">Date:</span>
+                                <span class="font-bold text-primary-text text-right" id="summary-date">Tomorrow</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-secondary-text">Time Slot:</span>
+                                <span class="font-bold text-accent text-right" id="summary-slot">09:00 AM</span>
+                            </div>
+                            <div class="flex justify-between pt-3 border-t border-border">
+                                <span class="text-secondary-text">Est. Consultation Fee:</span>
+                                <span class="font-bold text-primary-text text-right" id="summary-fee">$180 / Insured</span>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-hover rounded-xl border border-border text-[11px] text-secondary-text leading-relaxed">
+                            <i class="fa-solid fa-circle-info text-accent mr-1"></i> Copay or deductible collected upon arrival. Free cancellation up to 24 hours prior.
+                        </div>
+                    </div>
+
+                    <div class="bg-card-bg border border-border rounded-3xl p-6 shadow-md text-xs space-y-3">
+                        <h4 class="font-bold text-primary-text text-sm">Clinic Details & Arrival Info</h4>
+                        <p class="text-secondary-text"><i class="fa-solid fa-location-dot text-accent mr-1.5"></i> 742 Evergreen Medical Parkway, Suite 400</p>
+                        <p class="text-secondary-text"><i class="fa-solid fa-phone text-accent mr-1.5"></i> (555) 234-SKIN</p>
+                        <p class="text-secondary-text"><i class="fa-solid fa-clock text-accent mr-1.5"></i> Mon-Fri: 8am-6pm | Sat: 9am-2pm</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Confirmation Modal -->
+    <div id="booking-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-card-bg border border-border rounded-3xl max-w-md w-full p-8 shadow-2xl transform scale-95 transition-all text-center space-y-4">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-2xl font-serif font-bold text-primary-text">Appointment Confirmed!</h3>
+            <p class="text-xs text-secondary-text leading-relaxed">
+                Thank you, <span id="modal-patient-name" class="font-bold text-primary-text">Patient</span>. Your consultation has been reserved. A confirmation email and pre-appointment intake instructions have been sent.
+            </p>
+            <div class="bg-hover p-4 rounded-2xl border border-border text-xs text-left space-y-1.5">
+                <p><strong>Confirmation Code:</strong> <span class="font-mono text-accent">SC-84920</span></p>
+                <p><strong>Doctor:</strong> <span id="modal-doctor">Selected Doctor</span></p>
+                <p><strong>Consultation Mode:</strong> <span id="modal-mode" class="font-semibold text-accent">In-Clinic Suite #300</span></p>
+                <p><strong>Date & Time:</strong> <span id="modal-datetime">09:00 AM</span></p>
+            </div>
+            <div class="flex gap-3 pt-2">
+                <a href="index.html" class="flex-1 py-2.5 rounded-xl border border-border text-xs font-semibold text-primary-text hover:bg-hover transition">
+                    Return to Home
+                </a>
+                <button onclick="closeModal()" class="btn-primary flex-1 py-2.5 rounded-xl text-xs font-semibold">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="main-footer" class="pt-14 transition-colors duration-300" style="background-color: var(--color-footer-bg);">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8 pb-10 border-b border-slate-700">
+                <div class="col-span-2 md:col-span-2">
+                    <h3 class="text-2xl sm:text-3xl font-serif font-semibold mb-4 text-accent"><a href="index.html" class="hover:opacity-80 transition inline-flex items-center"><i class="fa-solid fa-spa mr-2"></i>Skin Clinic</a></h3>
+                    <p class="text-sm leading-relaxed max-w-xs text-white">Refined clinical dermatology and aesthetic excellence. Our board-certified specialists provide personalized medical, surgical, and cosmetic skin care solutions with state-of-the-art technology.</p>
+                    <div class="flex space-x-4 rtl:space-x-reverse mt-6">
+                        <a href="#" class="text-slate-300 hover:text-accent transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-slate-300 hover:text-accent transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-slate-300 hover:text-accent transition"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-medium mb-4 text-accent">Clinical Care</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="medical-dermatology.html" class="text-slate-300 hover:text-accent transition">Medical Dermatology</a></li>
+                        <li><a href="cosmetic-treatments.html" class="text-slate-300 hover:text-accent transition">Cosmetic Aesthetics</a></li>
+                        <li><a href="doctor-profiles.html" class="text-slate-300 hover:text-accent transition">Doctor Credentials</a></li>
+                        <li><a href="patient-results.html" class="text-slate-300 hover:text-accent transition">Before & After</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-medium mb-4 text-accent">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html" class="text-slate-300 hover:text-accent transition">Home</a></li>
+                        <li><a href="book-appointment.html" class="text-slate-300 hover:text-accent transition">Book Consultation</a></li>
+                        <li><a href="skincare-products.html" class="text-slate-300 hover:text-accent transition">Skincare Products</a></li>
+                        <li><a href="contact.html" class="text-slate-300 hover:text-accent transition">Contact & Location</a></li>
+                    </ul>
+                </div>
+                <div class="col-span-2 md:col-span-4 lg:col-span-1">
+                    <h4 class="text-lg font-medium mb-4 text-accent">Newsletter</h4>
+                    <p class="text-sm mb-4 text-white">Get monthly clinical skincare updates from our doctors.</p>
+                    <input type="email" placeholder="Your email" class="p-3 text-sm rounded-lg w-full bg-slate-800 border border-slate-700 text-white outline-none">
+                    <button class="btn-accent font-semibold py-3 rounded-lg w-full mt-3">Subscribe</button>
+                </div>
+            </div>
+            <div class="py-4 text-center text-xs text-white">&copy; 2026 <a href="index.html" class="hover:text-accent transition underline-offset-2 hover:underline">Dermatology & Skin Clinic</a>. All rights reserved. | <span class="hover:text-accent cursor-pointer">Privacy</span> | <span class="hover:text-accent cursor-pointer">Terms</span></div>
+        </div>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+                let consultMode = 'In-Clinic Visit';
+
+        function setConsultMode(mode) {
+            const inclinicBtn = document.getElementById('mode-inclinic');
+            const virtualBtn = document.getElementById('mode-virtual');
+            if (mode === 'inclinic') {
+                consultMode = 'In-Clinic Visit';
+                inclinicBtn.className = 'flex items-center gap-3 p-3.5 rounded-xl border-2 border-accent bg-background text-primary-text font-semibold text-sm transition-all shadow-sm';
+                virtualBtn.className = 'flex items-center gap-3 p-3.5 rounded-xl border border-border bg-background text-secondary-text font-medium text-sm hover:border-accent transition-all';
+                document.getElementById('summary-mode').innerText = 'In-Clinic Visit (Suite 300)';
+            } else {
+                consultMode = 'Virtual Tele-Derm';
+                virtualBtn.className = 'flex items-center gap-3 p-3.5 rounded-xl border-2 border-accent bg-background text-primary-text font-semibold text-sm transition-all shadow-sm';
+                inclinicBtn.className = 'flex items-center gap-3 p-3.5 rounded-xl border border-border bg-background text-secondary-text font-medium text-sm hover:border-accent transition-all';
+                document.getElementById('summary-mode').innerText = 'Virtual Tele-Derm (HD Link)';
+            }
+        }
+
+        let selectedService = 'Comprehensive Medical Dermatology';
+        let selectedDoctor = 'First Available Specialist';
+        let selectedSlot = '09:00 AM';
+
+        function selectService(el, service, fee) {
+            document.querySelectorAll('.service-card').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            selectedService = service;
+            document.getElementById('summary-service').innerText = service;
+            document.getElementById('summary-fee').innerText = fee;
+        }
+
+        function selectDoctor(el, doctor) {
+            document.querySelectorAll('.doctor-card').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            selectedDoctor = doctor;
+            document.getElementById('summary-doctor').innerText = doctor;
+        }
+
+        function selectSlot(el, slot) {
+            document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            selectedSlot = slot;
+            document.getElementById('summary-slot').innerText = slot;
+        }
+
+        function updateDateDisplay() {
+            const val = document.getElementById('book-date').value;
+            if (val) {
+                document.getElementById('summary-date').innerText = val;
+            }
+        }
+
+        function handleBooking(e) {
+            e.preventDefault();
+            const name = document.getElementById('patient-name').value;
+            const date = document.getElementById('book-date').value || 'Tomorrow';
+            
+            document.getElementById('modal-patient-name').innerText = name;
+            document.getElementById('modal-doctor').innerText = selectedDoctor;
+            document.getElementById('modal-mode').innerText = consultMode === 'In-Clinic Visit' ? 'In-Clinic Visit (Evergreen Suites)' : 'Virtual HD Video Consultation (Secure Link sent via SMS/Email)';
+            document.getElementById('modal-datetime').innerText = date + ' at ' + selectedSlot;
+
+            const modal = document.getElementById('booking-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.remove('scale-95');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('booking-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.add('scale-95');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const html = document.documentElement;
+            // Pre-fill tomorrow's date
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const dateInput = document.getElementById('book-date');
+            if (dateInput) {
+                dateInput.value = tomorrow.toISOString().split('T')[0];
+                document.getElementById('summary-date').innerText = tomorrow.toISOString().split('T')[0];
+            }
+
+            // Dropdowns
+            document.querySelectorAll(".dropdown-wrapper").forEach(dropdown => {
+                const btn = dropdown.querySelector(".dropdown-toggle");
+                dropdown.addEventListener("mouseenter", () => { if (window.innerWidth > 1280) dropdown.classList.add("open"); });
+                dropdown.addEventListener("mouseleave", () => { if (window.innerWidth > 1280) dropdown.classList.remove("open"); });
+                if (btn && window.innerWidth <= 1280) btn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); dropdown.classList.toggle("open"); });
+            });
+            document.addEventListener("click", e => { document.querySelectorAll(".dropdown-wrapper").forEach(d => { if (!d.contains(e.target)) d.classList.remove("open"); }); });
+
+            // Theme toggle
+            const themeToggle = document.getElementById('theme-toggle'), mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+            const applyTheme = (theme) => { html.setAttribute('data-theme', theme); document.querySelectorAll('.light-icon').forEach(i => i.classList.toggle('hidden', theme === 'dark')); document.querySelectorAll('.dark-icon').forEach(i => i.classList.toggle('hidden', theme === 'light')); localStorage.setItem('theme', theme); };
+            const initTheme = () => { const stored = localStorage.getItem('theme'); const pref = window.matchMedia('(prefers-color-scheme: dark)').matches; applyTheme(stored === 'dark' || (!stored && pref) ? 'dark' : 'light'); };
+            const toggleTheme = () => { const cur = html.getAttribute('data-theme'); applyTheme(cur === 'light' ? 'dark' : 'light'); };
+            themeToggle?.addEventListener('click', toggleTheme); mobileThemeToggle?.addEventListener('click', toggleTheme); initTheme();
+
+            // Language RTL
+            const langBtn = document.getElementById('lang-icon'), mobileLang = document.getElementById('mobile-lang-icon');
+            const toggleLang = () => { const isRTL = html.getAttribute('dir') === 'rtl'; html.setAttribute('dir', isRTL ? 'ltr' : 'rtl'); localStorage.setItem('language', isRTL ? 'en' : 'ar'); };
+            langBtn?.addEventListener('click', toggleLang); mobileLang?.addEventListener('click', toggleLang);
+            const savedDir = localStorage.getItem('language') === 'ar' ? 'rtl' : 'ltr'; html.setAttribute('dir', savedDir);
+
+            
+        // Mobile Accordion Dropdown Helper
+        window.toggleMobileAccordion = function(menuId, btn) {
+            const menu = document.getElementById(menuId);
+            if (!menu) return;
+            const isOpen = !menu.classList.contains('hidden');
+            // Close other accordion menus inside drawer
+            document.querySelectorAll('#drawer-content [id^="mobile-"][id$="-menu"]').forEach(m => {
+                m.classList.add('hidden');
+            });
+            document.querySelectorAll('.mobile-accordion-btn svg').forEach(svg => {
+                svg.classList.remove('rotate-180');
+            });
+            // If it was closed, open it now
+            if (!isOpen) {
+                menu.classList.remove('hidden');
+                const svg = btn ? btn.querySelector('svg') : null;
+                if (svg) svg.classList.add('rotate-180');
+            }
+        };
+
+            // Drawer
+            const drawer = document.getElementById('mobile-menu-drawer'), backdrop = document.getElementById('drawer-backdrop'), content = document.getElementById('drawer-content'), openBtn = document.getElementById('mobile-menu-open'), closeBtn = document.getElementById('mobile-menu-close');
+            const openDrawer = () => { drawer.classList.remove('pointer-events-none'); content.classList.remove('translate-y-[-100%]'); backdrop.classList.add('opacity-50', 'pointer-events-auto'); document.body.style.overflow = 'hidden'; };
+            const closeDrawer = () => { content.classList.add('translate-y-[-100%]'); backdrop.classList.remove('opacity-50', 'pointer-events-auto'); content.addEventListener('transitionend', () => { drawer.classList.add('pointer-events-none'); document.body.style.overflow = ''; }, { once: true }); };
+            openBtn?.addEventListener('click', openDrawer); closeBtn?.addEventListener('click', closeDrawer); backdrop?.addEventListener('click', closeDrawer);
+        });
+    </script>
+</body>
+</html>
